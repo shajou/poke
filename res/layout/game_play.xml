@@ -1,0 +1,243 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/gamePlayLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/poke_bg"
+    tools:context=".ActivityPoke" >
+	
+    <RelativeLayout 
+        android:id="@+id/gameStatuLayout"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+        >
+        
+        <TextView
+            android:id="@+id/timeout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:textSize="21sp"
+            />
+        
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
+            android:textSize="21sp"
+            />
+
+        <TextView
+            android:id="@+id/combo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:gravity="center|center_horizontal"
+            android:shadowColor="#1f619d"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="0"
+            android:textSize="36sp"
+            android:visibility="invisible" />
+        
+        <TextView
+            android:id="@+id/comboPlus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/combo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:gravity="center|center_horizontal"
+            android:shadowColor="#943d1d"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="0"
+            android:textSize="30sp"
+            android:visibility="invisible" />
+        
+        <TextView
+            android:id="@+id/itemMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/comboPlus"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:gravity="center|center_horizontal"
+            android:shadowColor="#ae9422"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="0"
+            android:textSize="30sp"
+            android:visibility="invisible"
+            android:textColor="#ffffff" />
+        
+        <TextView
+            android:id="@+id/itemComboDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/itemMsg"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:gravity="center|center_horizontal"
+            android:textColor="#ffffff"
+            android:shadowColor="#3b941d"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:textSize="30sp"
+            android:text="0"
+            android:visibility="invisible" />
+        
+        
+        
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/gamePlayLayout"
+        android:layout_below="@+id/gameStatuLayout"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+        >
+        
+        
+        
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/gameFunLayout"
+        android:layout_alignParentBottom="true"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+        >
+        
+        
+        
+        <Button
+            android:id="@+id/fun1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        
+        
+
+        <Button
+            android:id="@+id/pauseBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/fun1"
+            android:text="pause" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+	    android:id="@+id/gamePauseLayout"
+	   	android:layout_width="fill_parent"
+	   	android:layout_height="fill_parent"
+	   	android:background="#99000000"
+	   	android:clickable="true"
+	   	android:visibility="invisible"
+        >
+        <Button
+	        android:id="@+id/resumeBtn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="resume"
+	        android:layout_centerHorizontal="true"
+       		android:layout_marginTop="100dp"
+         />
+         
+         <Button
+          android:id="@+id/restartBtn"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:layout_below="@+id/resumeBtn"
+          android:layout_marginTop="30dp"
+          android:text="retry" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+	    android:id="@+id/gameOverLayout"
+	   	android:layout_width="fill_parent"
+	   	android:layout_height="fill_parent"
+	   	android:background="#99000000"
+	   	android:clickable="true"
+	   	android:visibility="invisible"
+	   
+        >
+        
+        	<TextView
+	            android:id="@+id/gameOverTitle"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerHorizontal="true"
+	            android:layout_marginTop="30dp"
+	            android:gravity="center|center_horizontal"
+	            android:text="遊戲結束"
+	            android:textSize="30sp"
+	            android:textColor="#ffffff" />
+        
+	        <TextView
+	            android:id="@+id/gameOverScore"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@+id/gameOverTitle"
+	            android:layout_centerHorizontal="true"
+	            android:layout_marginTop="30dp"
+	            android:gravity="center|center_horizontal"
+	            android:text="0"
+	            android:textSize="30sp"
+	            android:textColor="#ffffff" />
+	        
+	        <TextView
+	            android:id="@+id/gameOverCombo"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@+id/gameOverScore"
+	            android:layout_centerHorizontal="true"
+	            android:layout_marginTop="30dp"
+	            android:gravity="center|center_horizontal"
+	            android:text="0"
+	            android:textSize="30sp"
+	            android:textColor="#ffffff" />
+	        
+	        <TextView
+	            android:id="@+id/level"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@+id/gameOverCombo"
+	            android:layout_centerHorizontal="true"
+	            android:layout_marginTop="30dp"
+	            android:gravity="center|center_horizontal"
+	            android:shadowColor="#ffffff"
+	            android:shadowDx="0"
+	            android:shadowDy="0"
+	            android:shadowRadius="5"
+	            android:text="0"
+	            android:textColor="#C76C28"
+	            android:textSize="30sp"
+	            android:color="#ffffff" />
+	        
+	        <Button
+	          android:id="@+id/homeBtn"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_centerHorizontal="true"
+	          android:layout_below="@+id/level"
+	          android:layout_marginTop="30dp"
+	          android:text="回主畫面" />
+        
+    </RelativeLayout>
+
+</RelativeLayout>
