@@ -29,6 +29,11 @@
             android:name="gamePlay"
             android:screenOrientation="portrait"
             ></activity>
+        <activity 
+            android:name="gameRank"
+            android:screenOrientation="portrait"
+            >
+            </activity>
     </application>
 
 </manifest>

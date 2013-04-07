@@ -17,6 +17,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -147,6 +149,8 @@ public class gamePlay extends Activity {
 	SoundPool sp;
 	int sound;
 	
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -201,7 +205,7 @@ public class gamePlay extends Activity {
 		dm = new DisplayMetrics();
 		this.getWindowManager().getDefaultDisplay().getMetrics(dm);
 		vW = dm.widthPixels;
-		vH = dm.heightPixels;
+		vH = dm.heightPixels - 40;
 		
 		System.out.println( "w:" + vW + " h:" + vH );
 		
@@ -239,11 +243,15 @@ public class gamePlay extends Activity {
 		aSet.addAnimation(cpsAlphaAnime);
 		
 		//按鈕位置設置
-		int gsl_h = 70;
-		int x = ((vW / 5) - (int)(vW / 1.5)) / 2;
-		int y = gsl_h;
-		int marginBottom = 50;
 		
+		int x = ((vW / 5) - (int)(vW / 1.5)) / 2;
+		
+		int xPaddig = (int)(vW / 5);
+		int yPadding = (int)(vH / 6);
+		//int marginBottom = xyPaddig;
+		int gsl_h = (int)(vH / 60) * 4;
+		int y = 0;
+		int yMargin = (int)(yPadding / 1.5 ) / 4; //18
 		
 		//combo 計算 有效時間為0.5秒
 		comboTime();
@@ -259,11 +267,7 @@ public class gamePlay extends Activity {
 								
 			if( i % 5 == 0)
 			{
-				if(i >= 5)
-				{
-					gsl_h = marginBottom;
-				}
-				y = (i * 25) + gsl_h;
+				y = (i * yMargin) + gsl_h;
 				x = ((vW / 5) - (int)((vW / 5) / 1.5)) / 2;
 			}			
 			
@@ -337,12 +341,12 @@ public class gamePlay extends Activity {
 					{
 						comboPlus = 1400;
 					}
-					else if(scorePlus >= 210)
+					else if(scorePlus >= 210 && scorePlus < 230)
 					{
 						comboPlus = 1700;
 						
 					}
-					else if(scorePlus >= 230)
+					else if(scorePlus >= 230 && scorePlus < 250)
 					{
 						comboPlus = 2000;
 						
@@ -487,6 +491,11 @@ public class gamePlay extends Activity {
 					else if(scorePlus == 250)
 					{
 						itemComboDescStr = "娘子快來見上帝";
+						itemComboDescMsgBox(itemComboDescStr);
+					}
+					else if(scorePlus == 280)
+					{
+						itemComboDescStr = "神之領域";
 						itemComboDescMsgBox(itemComboDescStr);
 					}
 					
@@ -825,7 +834,7 @@ public class gamePlay extends Activity {
 		{
 			levelStr = "B";
 		}
-		else if( scoreInt >= 150000 && scoreInt < 180000 )
+		else if( scoreInt >= 150000 && scoreInt < 210000 )
 		{
 			levelStr = "A";
 		}
@@ -841,6 +850,18 @@ public class gamePlay extends Activity {
 		level.setText(levelStr);
 		gameOverScore.setText( score.getText() );
 		gameOverCombo.setText( String.valueOf(regComboScore) + " hits" );
+		
+		//SQLite
+		
+		NewListDataSQL nld = new NewListDataSQL(gamePlay.this);
+		//SQLiteDatabase db = nld.getWritableDatabase();
+		nld.create("ghost", Integer.parseInt(String.valueOf(score.getText())), regComboScore, levelStr);
+		//ContentValues values = new ContentValues();
+		//values.put("name", "ghost");
+		//values.put("score", String.valueOf(score.getText()));
+		//values.put("hits", String.valueOf(regComboScore));
+		//values.put("level", levelStr);
+		//db.insert("poke_rank", null, values);
 	}
 	
 	//遊戲道具
@@ -926,14 +947,6 @@ public class gamePlay extends Activity {
 			    			Thread.sleep(3000);
 				    		itemScorePlus = 1;
 				    		
-				    		/*
-				    		if( !threadPause )
-				    		{
-				    			
-				    			Message msg = new Message();
-								msg.what = finish;
-								uiMessageHandler.sendMessage(msg);
-				    		}*/
 			    		
 						}
 					catch(Exception e){
@@ -953,33 +966,7 @@ public class gamePlay extends Activity {
 	private void pokeSoundEffect() {
 		
 		sp.play(sound, 1, 1, 0, 0, 1);
-		/*
-		Thread soundThread = new Thread() {
-			@Override
-		    public void run() {
-		        // TODO Auto-generated method stub           
-		    	
-			    	try {
-				    		
-				    		if( !threadPause )
-				    		{
-				    			Message msg = new Message();
-								msg.what = 3;
-								uiMessageHandler.sendMessage(msg);
-				    		}
-			    		
-						}
-					catch(Exception e){
-					    //  e.printStackTrace();
-					    //結束線程
-						}
-					finally {
-						}
-				        
-			    	}    
-		    	
-			};
-			soundThread.start();*/
+		
 	}
 	
 	//遊戲暫停

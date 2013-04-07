@@ -12,6 +12,7 @@ public class ActivityPoke extends Activity {
 
 	
 	Button startBtn;
+	Button rankBtn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,7 @@ public class ActivityPoke extends Activity {
 		*/
 		
 		startBtn = (Button)findViewById(R.id.startBtn);
+		rankBtn = (Button)findViewById(R.id.rankBtn);
 		
 		startBtn.setOnClickListener(new View.OnClickListener() {
 			
@@ -33,6 +35,17 @@ public class ActivityPoke extends Activity {
 				// TODO Auto-generated method stub
 				Intent it = new Intent();
 				it.setClass(ActivityPoke.this, gamePlay.class);
+				ActivityPoke.this.startActivity(it);
+			}
+		});
+		
+		rankBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent it = new Intent();
+				it.setClass(ActivityPoke.this, gameRank.class);
 				ActivityPoke.this.startActivity(it);
 			}
 		});
