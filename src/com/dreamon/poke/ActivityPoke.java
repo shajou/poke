@@ -1,6 +1,17 @@
 package com.dreamon.poke;
 
+import java.util.ArrayList;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
@@ -13,6 +24,7 @@ public class ActivityPoke extends Activity {
 	
 	Button startBtn;
 	Button rankBtn;
+	Button testBtn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +39,7 @@ public class ActivityPoke extends Activity {
 		
 		startBtn = (Button)findViewById(R.id.startBtn);
 		rankBtn = (Button)findViewById(R.id.rankBtn);
+		testBtn = (Button)findViewById(R.id.testBtn);
 		
 		startBtn.setOnClickListener(new View.OnClickListener() {
 			
@@ -50,8 +63,32 @@ public class ActivityPoke extends Activity {
 			}
 		});
 		
+		testBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				urlLoad urlload = new urlLoad();
+				urlload.setUrl("http://poke.grtimed.com/upd_rank.php");
+				
+				String keyAry[] = {"name", "score", "hits", "level"};
+				String valueAry[] = {"admin", "200000", "200", "S"};
+				
+				//ArrayList<String>key = ;
+				//ArrayList<String>value = ;
+				
+				urlload.startThread(keyAry,valueAry);
+				//urlLoadThread();
+			}
+		});
+		
+		
 		
 	}
+	
+	
+	
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

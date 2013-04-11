@@ -834,15 +834,15 @@ public class gamePlay extends Activity {
 		{
 			levelStr = "B";
 		}
-		else if( scoreInt >= 150000 && scoreInt < 210000 )
+		else if( scoreInt >= 150000 && scoreInt < 180000 )
 		{
 			levelStr = "A";
 		}
-		else if( scoreInt >= 210000 && scoreInt < 240000 )
+		else if( scoreInt >= 180000 && scoreInt < 210000 )
 		{
 			levelStr = "S";
 		}
-		else if( scoreInt >= 240000)
+		else if( scoreInt >= 210000)
 		{
 			levelStr = "SS";
 		}
@@ -856,6 +856,13 @@ public class gamePlay extends Activity {
 		NewListDataSQL nld = new NewListDataSQL(gamePlay.this);
 		//SQLiteDatabase db = nld.getWritableDatabase();
 		nld.create("ghost", Integer.parseInt(String.valueOf(score.getText())), regComboScore, levelStr);
+		
+		urlLoad urlload = new urlLoad();
+		urlload.setUrl("http://poke.grtimed.com/upd_rank.php");
+		String keyAry[] = {"name", "score", "hits", "level"};
+		String valueAry[] = {"ghost", String.valueOf(score.getText()), String.valueOf(regComboScore), levelStr};
+		urlload.startThread(keyAry,valueAry);
+		
 		//ContentValues values = new ContentValues();
 		//values.put("name", "ghost");
 		//values.put("score", String.valueOf(score.getText()));
