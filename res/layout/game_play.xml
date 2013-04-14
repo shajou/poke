@@ -229,6 +229,8 @@
 	            android:textSize="30sp"
 	            android:color="#ffffff" />
 	        
+	        
+	        
 	        <Button
 	          android:id="@+id/homeBtn"
 	          android:layout_width="wrap_content"
@@ -236,7 +238,43 @@
 	          android:layout_centerHorizontal="true"
 	          android:layout_below="@+id/level"
 	          android:layout_marginTop="30dp"
+	          
 	          android:text="回主畫面" />
+	        
+	        <Button
+	          android:id="@+id/updateBtn"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_centerHorizontal="true"
+	          android:layout_below="@+id/homeBtn"
+	          android:layout_marginTop="30dp"
+	          android:visibility="invisible"
+	          android:text="上傳成績" />
+	        
+	        <Button
+	          android:id="@+id/registerBtn"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_centerHorizontal="true"
+	          android:layout_below="@+id/homeBtn"
+	          android:layout_marginTop="30dp"
+	          android:visibility="invisible"
+	          android:text="註冊" />
+	        
+	        <TextView
+	            android:id="@+id/registerDesc"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@+id/registerBtn"
+	            android:layout_centerHorizontal="true"
+	            android:layout_marginTop="30dp"
+	            android:gravity="center|center_horizontal"
+	            android:visibility="invisible"
+	            android:text="註冊後才能上傳成績喔！"
+	            android:textColor="#ffffff"
+	            android:textSize="30sp"
+	            android:color="#ffffff" />
+	        
         
     </RelativeLayout>
 

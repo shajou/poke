@@ -8,31 +8,44 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ActivityPoke" >
 
-    <Button
-        android:id="@+id/startBtn"
+    <EditText
+        android:id="@+id/nameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="173dp"
-        android:text="Start" />
-    
-    <Button
-        android:id="@+id/rankBtn"
+        android:layout_marginTop="20dp"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/emailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/nameText"
+        android:layout_marginTop="21dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/startBtn"
-        android:layout_marginTop="40dp"
-        android:text="Rank" />
-    
+        android:ems="10"
+        android:inputType="textEmailAddress" />
+
     <Button
-        android:id="@+id/testBtn"
+        android:id="@+id/registerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/emailText"
+        android:layout_marginTop="21dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/rankBtn"
-        android:layout_marginTop="40dp"
-        android:text="SQL" />
+        android:text="register" />
+    
+    <TextView
+        android:id="@+id/responseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registerBtn"
+        android:layout_marginTop="21dp"
+        android:layout_centerHorizontal="true"
+        android:text="" />
 
 </RelativeLayout>

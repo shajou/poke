@@ -37,6 +37,16 @@
             android:screenOrientation="portrait"
             >
             </activity>
+        <activity 
+            android:name="register"
+            android:screenOrientation="portrait"
+            >
+            </activity>
+        <activity 
+            android:name="sqlTest"
+            android:screenOrientation="portrait"
+            >
+            </activity>
     </application>
 
 </manifest>

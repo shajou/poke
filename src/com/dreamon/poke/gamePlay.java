@@ -18,6 +18,8 @@ import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.util.DisplayMetrics;
@@ -127,17 +129,23 @@ public class gamePlay extends Activity {
 	int gameTimeHandler = 2;
 	private Thread gTimeThread = null;
 	int gTimeOut = 1000;
-	String gTime = "60";
+	String gTime = "1";
 	public static TextView gTimeText;
 	
 	//功能按鈕
 	Button restartBtn;
 	
 	//遊戲結束
+	String levelStr;
+	String name[];
+	String email[];
 	Button homeBtn;
 	TextView gameOverScore;
 	TextView gameOverCombo;
 	TextView level;
+	public static Button updateBtn;
+	Button registerBtn; 
+	TextView registerDesc;
 	
 	//道具
 	TextView itemMsg;
@@ -186,14 +194,15 @@ public class gamePlay extends Activity {
 		//倒數計時開始
 		gTimeText = (TextView)findViewById(R.id.timeout);
 		//遊戲結束
+		
 		homeBtn = (Button)findViewById(R.id.homeBtn);
 		gameOverScore = (TextView)findViewById(R.id.gameOverScore);
 		gameOverCombo = (TextView)findViewById(R.id.gameOverCombo);
 		level = (TextView)findViewById(R.id.level);
-		//timer
-		//timer = new Timer();
-		//thread = new Thread();
-		//gTimeThread = new Thread();
+		updateBtn = (Button)findViewById(R.id.updateBtn);
+		registerBtn = (Button)findViewById(R.id.registerBtn);
+		registerDesc = (TextView)findViewById(R.id.registerDesc);
+		
 		
 		gameInit();
 		
@@ -813,7 +822,7 @@ public class gamePlay extends Activity {
 		});
 		
 		int scoreInt = Integer.parseInt( String.valueOf(score.getText()) );
-		String levelStr = "";
+		levelStr = "";
 		if( scoreInt < 30000 )
 		{
 			levelStr = "F";
@@ -851,24 +860,86 @@ public class gamePlay extends Activity {
 		gameOverScore.setText( score.getText() );
 		gameOverCombo.setText( String.valueOf(regComboScore) + " hits" );
 		
+		//判斷是否有註冊
+		String userNmae = "ghost";
+		memberDataSql mds = new memberDataSql(gamePlay.this);
+		//mds.create("ghost", "ghost@email.com");
+		
+		Cursor cursor = mds.getAll("");
+		System.out.println("getCount: " + cursor.getCount());
+		
+		if(cursor.getCount() == 0)
+		{
+			System.out.println("getCount == 0");
+			updateBtn.setVisibility(View.INVISIBLE);
+			registerBtn.setVisibility(View.VISIBLE);
+			registerDesc.setVisibility(View.VISIBLE);
+			userNmae = "ghost";
+			
+			registerBtn.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent it = new Intent();
+					it.setClass(gamePlay.this, register.class);
+					gamePlay.this.startActivity(it);
+				}
+			});
+		}
+		else
+		{
+			updateBtn.setVisibility(View.VISIBLE);
+			registerBtn.setVisibility(View.INVISIBLE);
+			registerDesc.setVisibility(View.INVISIBLE);
+			
+			
+			int rows_num = cursor.getCount();	//取得資料表列數
+			int id[] = new int[rows_num];
+			name = new String[rows_num];
+			email = new String[rows_num];
+			
+			//取資料
+			
+			String[] str = new String[cursor.getCount()];
+			 
+			if(rows_num != 0) {
+				cursor.moveToFirst();			//將指標移至第一筆資料
+				for(int i=0; i<rows_num; i++) {
+					id[i] = cursor.getInt(0);	//取得第0欄的資料，根據欄位type使用適當語法
+					name[i] = cursor.getString(1);
+					email[i] = cursor.getString(2);
+					cursor.moveToNext();		//將指標移至下一筆資料
+					//System.out.println(id[i] + " " + name[i] + " " + score[i] + " " + hits[i] + " " + level[i] );
+				}
+			}
+			cursor.close();
+			
+			userNmae = name[0];
+			
+			updateBtn.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+					//上傳資料至遠端
+					urlLoad urlload = new urlLoad();
+					urlload.setUrl("http://poke.grtimed.com/upd_rank.php");
+					String keyAry[] = {"name", "email", "score", "hits", "level"};
+					String valueAry[] = {name[0], email[0], String.valueOf(score.getText()), String.valueOf(regComboScore), levelStr};
+					urlload.startThread(keyAry,valueAry);
+				}
+			});
+		}
+		
 		//SQLite
 		
 		NewListDataSQL nld = new NewListDataSQL(gamePlay.this);
-		//SQLiteDatabase db = nld.getWritableDatabase();
-		nld.create("ghost", Integer.parseInt(String.valueOf(score.getText())), regComboScore, levelStr);
+		nld.create(userNmae, Integer.parseInt(String.valueOf(score.getText())), regComboScore, levelStr);
 		
-		urlLoad urlload = new urlLoad();
-		urlload.setUrl("http://poke.grtimed.com/upd_rank.php");
-		String keyAry[] = {"name", "score", "hits", "level"};
-		String valueAry[] = {"ghost", String.valueOf(score.getText()), String.valueOf(regComboScore), levelStr};
-		urlload.startThread(keyAry,valueAry);
 		
-		//ContentValues values = new ContentValues();
-		//values.put("name", "ghost");
-		//values.put("score", String.valueOf(score.getText()));
-		//values.put("hits", String.valueOf(regComboScore));
-		//values.put("level", levelStr);
-		//db.insert("poke_rank", null, values);
+		
 	}
 	
 	//遊戲道具

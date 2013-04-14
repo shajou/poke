@@ -18,18 +18,24 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
-public class ActivityPoke extends Activity {
+public class register extends Activity {
 
 	
-	Button startBtn;
-	Button rankBtn;
-	Button testBtn;
+	Button registerBtn;
+	TextView nameText;
+	TextView emailText;
+	TextView responseText;
+	
+	memberDataSql mds;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.poke_main);
+		setContentView(R.layout.register);
+		
+		mds = new memberDataSql(register.this);
 		
 		/*
 		Intent it = new Intent();
@@ -37,42 +43,36 @@ public class ActivityPoke extends Activity {
 		ActivityPoke.this.startActivity(it);
 		*/
 		
-		startBtn = (Button)findViewById(R.id.startBtn);
-		rankBtn = (Button)findViewById(R.id.rankBtn);
-		testBtn = (Button)findViewById(R.id.testBtn);
+		registerBtn = (Button)findViewById(R.id.registerBtn);
+		nameText = (TextView)findViewById(R.id.nameText);
+		emailText = (TextView)findViewById(R.id.emailText);
+		responseText = (TextView)findViewById(R.id.responseText);
 		
-		startBtn.setOnClickListener(new View.OnClickListener() {
+		registerBtn.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				
+				if( mds.create(String.valueOf(nameText.getText()), String.valueOf(emailText.getText())) != -1 )
+				{
+					register.this.finish();
+				}
+				else
+				{
+					responseText.setText("註冊失敗，請重新再試一次");
+				}
+				
+				
+				/*
 				Intent it = new Intent();
-				it.setClass(ActivityPoke.this, gamePlay.class);
-				ActivityPoke.this.startActivity(it);
+				it.setClass(register.this, gamePlay.class);
+				register.this.startActivity(it);
+				*/
 			}
 		});
 		
-		rankBtn.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent it = new Intent();
-				it.setClass(ActivityPoke.this, gameRank.class);
-				ActivityPoke.this.startActivity(it);
-			}
-		});
 		
-		testBtn.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent it = new Intent();
-				it.setClass(ActivityPoke.this, sqlTest.class);
-				ActivityPoke.this.startActivity(it);
-			}
-		});
 		
 	}
 

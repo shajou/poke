@@ -1,6 +1,7 @@
 package com.dreamon.poke;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +28,12 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Handler;
 import android.os.Message;
-import android.view.View;
 
-public class urlLoad extends Activity {
+public class getSqlData extends Activity {
 
 	String postUrl = "";
 	String getUrl = "";
-	String postResult = "";
+	public static String postResult = "";
 	String getResult = "";
 	//HttpClient client;
 	//HttpPost post;
@@ -41,7 +41,7 @@ public class urlLoad extends Activity {
 	//HttpEntity resEntity;
 	
     //建構子
-	public urlLoad() {
+	public getSqlData() {
 		//client = new DefaultHttpClient();
 		//post = new HttpPost(url);
 		//response = client.execute(post);
@@ -57,16 +57,17 @@ public class urlLoad extends Activity {
 		this.postUrl = url;
 	}
 	
-	public void startThread(String[] key, String[] value) {
-		Thread t = new Thread(new sendPostRunnable(key, value));
+	public void startThread() {
+		Thread t = new Thread(new sendPostRunnable());
 		t.start();
 	}
 	
-	private String sendPostDataToIntenet(String[] key,String[] str)
+	private String sendPostDataToIntenet()
 	{
 		//bulid http post connect
 		HttpPost post = new HttpPost(postUrl);
 		
+		/*
 		List<NameValuePair>params = new ArrayList<NameValuePair>();
 		
 		for(int i = 0; i < key.length; i++)
@@ -74,11 +75,11 @@ public class urlLoad extends Activity {
 			params.add(new BasicNameValuePair(key[i], str[i] ));
 		}
 		//params.add(new BasicNameValuePair(key, str ));
-		
+		*/
 		try
 		{
 			//request http
-			post.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+			//post.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
 			
 			//get http response
 			HttpResponse response = new DefaultHttpClient().execute(post);
@@ -95,6 +96,9 @@ public class urlLoad extends Activity {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			String result = "false";
+			return result;
+			//System.out.println("exception");
 		}
 		return null;
 	}
@@ -104,7 +108,7 @@ public class urlLoad extends Activity {
 		String str[];
 		String key[];
 		
-		public sendPostRunnable(String[] key, String[] str)
+		public sendPostRunnable()
 		{
 			this.str = str;
 			this.key = key;
@@ -113,7 +117,7 @@ public class urlLoad extends Activity {
 		@Override
 		public void run() {
 			//return result;
-			String result = sendPostDataToIntenet(key, str);
+			String result = sendPostDataToIntenet();
 			uiMessageHandler.obtainMessage(1, result).sendToTarget();
 		}
 	}
@@ -136,15 +140,18 @@ public class urlLoad extends Activity {
 					
 					if(result != null)
 					{
-						//上傳完畢就關閉按鈕
-						gamePlay.updateBtn.setVisibility(View.INVISIBLE);
-						System.out.println(result);
+						//System.out.println("getSqlData: " + result);
+						postResult = result;
 					}
 					
 					break;
 			}
 		}
 	};
+	
+	public String result() {
+		return postResult;
+	}
 	
 
 }
