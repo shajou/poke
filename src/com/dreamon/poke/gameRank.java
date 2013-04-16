@@ -143,6 +143,9 @@ public class gameRank extends Activity {
 			sqlData.startThread();
 		}
 		
+		//開啟本機記錄
+		switchRank(1);
+		
 	}
 	
 	private void switchRank(int s){

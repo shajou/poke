@@ -105,13 +105,13 @@ public class gamePlay extends Activity {
 	AnimationSet icdAs;
 	ScaleAnimation icdScale;
 	AlphaAnimation icdAlpha;
-	int icdDur = 1000;
+	int icdDur = 1500;
 	
 	float sfX = 1.2f;
 	float stX = 1.0f;
 	float sfY = 1.2f;
 	float stY = 1.0f;
-	int dur = 500;
+	int dur = 1000;
 	
 	//場景按鈕
 	int btnCount = 30;
@@ -122,14 +122,14 @@ public class gamePlay extends Activity {
 	
 	//佇列存放
 	ArrayList<View> st = new ArrayList<View>();
-	int stStatu[] = new int[30];
+	int stStatu[] = new int[30];;
 	
 	//遊戲計時
 	Timer gTimer;
 	int gameTimeHandler = 2;
 	private Thread gTimeThread = null;
 	int gTimeOut = 1000;
-	String gTime = "1";
+	String gTime = "60";
 	public static TextView gTimeText;
 	
 	//功能按鈕
@@ -139,7 +139,8 @@ public class gamePlay extends Activity {
 	String levelStr;
 	String name[];
 	String email[];
-	Button homeBtn;
+	Button overHomeBtn;
+	Button pauseHomeBtn;
 	TextView gameOverScore;
 	TextView gameOverCombo;
 	TextView level;
@@ -195,7 +196,7 @@ public class gamePlay extends Activity {
 		gTimeText = (TextView)findViewById(R.id.timeout);
 		//遊戲結束
 		
-		homeBtn = (Button)findViewById(R.id.homeBtn);
+		overHomeBtn = (Button)findViewById(R.id.overHomeBtn);
 		gameOverScore = (TextView)findViewById(R.id.gameOverScore);
 		gameOverCombo = (TextView)findViewById(R.id.gameOverCombo);
 		level = (TextView)findViewById(R.id.level);
@@ -203,6 +204,8 @@ public class gamePlay extends Activity {
 		registerBtn = (Button)findViewById(R.id.registerBtn);
 		registerDesc = (TextView)findViewById(R.id.registerDesc);
 		
+		//佇列存放
+		//stStatu = new int[30];
 		
 		gameInit();
 		
@@ -426,7 +429,7 @@ public class gamePlay extends Activity {
 						
 						if(st.get(i).equals(v))
 						{
-							
+							//System.out.println(String.valueOf("stStatu: " + stStatu[i] ));
 							//消耗道具
 							switch(stStatu[i])
 							{
@@ -751,6 +754,10 @@ public class gamePlay extends Activity {
 		//gamePlay.this.startActivities(new Intent().setClass());
 		//timer
 		
+		//thread.interrupt();
+		//Bundle tempBundle = new Bundle();
+		//onCreate(tempBundle);
+
 		this.finish();
 	}
 	
@@ -812,7 +819,7 @@ public class gamePlay extends Activity {
 		gOverlayout.setVisibility(View.VISIBLE);
 		gOverlayout.bringToFront();
 		
-		homeBtn.setOnClickListener(new View.OnClickListener() {
+		overHomeBtn.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -952,7 +959,7 @@ public class gamePlay extends Activity {
 		
 		imaSet.addAnimation(imScaleAnime);
 		imaSet.addAnimation(imAlphaAnime);
-		imaSet.setDuration(500);
+		imaSet.setDuration(dur);
 		itemMsg.setText( str );
 		itemMsg.setVisibility(View.VISIBLE);
 		itemMsg.startAnimation(imaSet);
