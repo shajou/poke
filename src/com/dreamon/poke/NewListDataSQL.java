@@ -6,11 +6,12 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class NewListDataSQL extends SQLiteOpenHelper {
 
-	private static final int VERSION = 3;//資料庫版本  
+	private static final int VERSION = 4;//資料庫版本  
 	private final static String name = "poke.db"; 
 	
 	private final static String _TableName = "poke_rank";
@@ -36,12 +37,13 @@ public class NewListDataSQL extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		 String DATABASE_CREATE_TABLE =
-			     "create table poke_rank  ("
+			     "create table if not exists poke_rank  ("
 			       + "_ID INTEGER PRIMARY KEY  AUTOINCREMENT,"
 			             + "name TEXT,"
 			             + "score INTEGER,"
 			             + "hits INTEGER,"
-			             + "level TEXT"
+			             + "level TEXT,"
+			             + "isUpdatesScore TEXT"
 			         + ")";
 		 db.execSQL(DATABASE_CREATE_TABLE);
 	}
@@ -52,14 +54,27 @@ public class NewListDataSQL extends SQLiteOpenHelper {
 		{
 			order = "";
 		}
-	    return db.rawQuery("SELECT * FROM poke_rank " + order , null);
+		
+		Cursor cursor;
+		
+		try{
+			cursor = db.rawQuery("SELECT * FROM poke_rank " + order , null);
+			return cursor;
+		}
+		catch (SQLiteException e)
+		{
+			cursor = null;
+			return cursor;
+		}
+		
+	    
 	}
 	
 	// 取得一筆紀錄
 	public Cursor get(long rowId) throws SQLException {
 		Cursor cursor = db.query(true,
 		"poke_rank",				//資料表名稱
-		new String[] {"_ID", "name", "score", "hits", "level"},	//欄位名稱
+		new String[] {"_ID", "name", "score", "hits", "level", "isUpdatesScore"},	//欄位名稱
 		"_ID=" + rowId,				//WHERE
 		null, // WHERE 的參數
 		null, // GROUP BY
@@ -76,12 +91,13 @@ public class NewListDataSQL extends SQLiteOpenHelper {
 	}
 	
 	//新增一筆記錄，成功回傳rowID，失敗回傳-1
-	public long create(String name, int score, int hits, String level) {
+	public long create(String name, int score, int hits, String level, String isUpdatesScore) {
 		ContentValues args = new ContentValues();
 		args.put("name", name);
 		args.put("score", score);
 		args.put("hits", hits);
 		args.put("level", level);
+		args.put("isUpdatesScore", isUpdatesScore);
  
 		return db.insert("poke_rank", null, args);
     }
@@ -95,9 +111,9 @@ public class NewListDataSQL extends SQLiteOpenHelper {
 	}
 	
 	//修改記錄，回傳成功修改筆數
-	public int update(long rowId, String value) {
+	public int update(long rowId, String key, String value) {
 		ContentValues args = new ContentValues();
-		args.put("value", value);
+		args.put(key, value);
  
 		return db.update("poke_rank",	//資料表名稱
 		args,				//VALUE
@@ -111,6 +127,10 @@ public class NewListDataSQL extends SQLiteOpenHelper {
 		// TODO Auto-generated method stub
 		db.execSQL("DROP TABLE IF EXISTS poke_rank");
 		onCreate(db);
+	}
+	
+	public void deleteTable() {
+		db.execSQL("DROP TABLE IF EXISTS poke_rank");
 	}
 	
 	@Override   

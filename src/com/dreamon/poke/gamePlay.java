@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.AbsoluteLayout;
@@ -62,6 +63,10 @@ public class gamePlay extends Activity {
 	RelativeLayout gsl;
 	RelativeLayout gPauselayout;
 	RelativeLayout gOverlayout;
+	
+	//遊戲倒數
+	TextView gameCountDown;
+	int countDown = 3;
 	
 	//線程
 	private Thread thread = null;
@@ -106,6 +111,11 @@ public class gamePlay extends Activity {
 	ScaleAnimation icdScale;
 	AlphaAnimation icdAlpha;
 	int icdDur = 1500;
+	//count down
+	AnimationSet cdAs;
+	ScaleAnimation cdScaleAnime;
+	AlphaAnimation cdAlphaAnime;
+	int cdDur = 1000;
 	
 	float sfX = 1.2f;
 	float stX = 1.0f;
@@ -129,7 +139,7 @@ public class gamePlay extends Activity {
 	int gameTimeHandler = 2;
 	private Thread gTimeThread = null;
 	int gTimeOut = 1000;
-	String gTime = "60";
+	String gTime = "1";
 	public static TextView gTimeText;
 	
 	//功能按鈕
@@ -147,6 +157,9 @@ public class gamePlay extends Activity {
 	public static Button updateBtn;
 	Button registerBtn; 
 	TextView registerDesc;
+	
+	int isUpdateScore = 0;
+	long insertId = 0;
 	
 	//道具
 	TextView itemMsg;
@@ -207,7 +220,19 @@ public class gamePlay extends Activity {
 		//佇列存放
 		//stStatu = new int[30];
 		
-		gameInit();
+		//遊戲倒數3秒
+		cdAs = new AnimationSet(false);
+		cdAlphaAnime = new AlphaAnimation(1, 0);
+		cdAlphaAnime.setDuration(cdDur);
+		cdScaleAnime = new ScaleAnimation(1.0f, 0, 1.0f, 0,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		cdScaleAnime.setDuration(cdDur);
+		
+		cdAs.addAnimation(cdAlphaAnime);
+		cdAs.addAnimation(cdScaleAnime);
+		gameCountDown = (TextView)findViewById(R.id.gameCountDown);
+		threadGameCountDown();
+		
+		//gameInit();
 		
 	}
 	
@@ -230,10 +255,10 @@ public class gamePlay extends Activity {
 		comboPlusShow.setText("0");
 		
 		//動畫初始
-		scaleAnime = new ScaleAnimation(sfX, stX, sfY, stY);
+		scaleAnime = new ScaleAnimation(sfX, stX, sfY, stY,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 		scaleAnime.setDuration(dur);
 		
-		cpsScaleAnime = new ScaleAnimation(sfX, stX, sfY, stY);
+		cpsScaleAnime = new ScaleAnimation(sfX, stX, sfY, stY,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 		cpsScaleAnime.setDuration(dur);
 		
 		cpsAlphaAnime = new AlphaAnimation(1, 0);
@@ -241,7 +266,7 @@ public class gamePlay extends Activity {
 		
 		//icd
 		icdAs = new AnimationSet(false);
-		icdScale = new ScaleAnimation(sfX, stX, sfY, stY);
+		icdScale = new ScaleAnimation(sfX, stX, sfY, stY,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 		icdAlpha = new AlphaAnimation(1,0);
 		icdScale.setDuration(icdDur);
 		icdAlpha.setDuration(icdDur);
@@ -271,6 +296,226 @@ public class gamePlay extends Activity {
 		//重置泡泡 每1秒檢查一次
 		threadResetBtn();
 		
+		View.OnClickListener bubClickEvent = new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				//音效
+				pokeSoundEffect();
+				
+				//分數計算
+				String str = score.getText().toString();
+				int s = Integer.parseInt(str);
+				
+				//連技越多 加成分數越多
+				//comboPlus = 0;
+				
+				if(scorePlus >= 30 && scorePlus < 50)
+				{
+					comboPlusShow.setAnimation(cpsScaleAnime);
+					comboPlus = 100;
+					
+					
+				}
+				else if(scorePlus >= 50 && scorePlus < 70)
+				{
+					comboPlus = 200;
+					
+				}
+				else if(scorePlus >= 70 && scorePlus < 90)
+				{
+					comboPlus = 300;
+					
+				}
+				else if(scorePlus >= 90 && scorePlus < 110)
+				{
+					comboPlus = 400;
+					
+				}
+				else if(scorePlus >= 110 && scorePlus < 130)
+				{
+					comboPlus = 550;
+				}
+				else if(scorePlus >= 130 && scorePlus < 150)
+				{
+					comboPlus = 700;
+				}
+				else if(scorePlus >= 150 && scorePlus < 170)
+				{
+					comboPlus = 900;
+				}
+				else if(scorePlus >= 170 && scorePlus < 190)
+				{
+					comboPlus = 1100;
+				}
+				else if(scorePlus >= 190 && scorePlus < 210)
+				{
+					comboPlus = 1400;
+				}
+				else if(scorePlus >= 210 && scorePlus < 230)
+				{
+					comboPlus = 1700;
+					
+				}
+				else if(scorePlus >= 230 && scorePlus < 250)
+				{
+					comboPlus = 2000;
+					
+				}
+				else if(scorePlus >= 250)
+				{
+					comboPlus = 3000;
+					
+				}
+				
+				//大於30後每次加成就跳一次動畫
+				if(scorePlus >= 30)
+				{
+					comboPlusShow.setVisibility(View.VISIBLE);
+					//comboPlusShow.setAnimation(aSet);
+					comboPlusShow.startAnimation(aSet);
+				}
+				
+				//連技加成顯示
+				comboPlusShow.setText("+ " + String.valueOf(comboPlus ) + " !!" );
+				
+				//分數計算
+				int p = s + 1 + scorePlus + (comboPlus * itemScorePlus);
+				score.setText( String.valueOf(p) );
+				
+				//有戳下去就將c = 0; 讓有效combo 持續
+				c = 0;
+				
+				//分數加成
+				scorePlus++;
+				
+				//連技數顯示
+				combo.setText( String.valueOf(scorePlus) + " hits!!");
+				//大於十次連技才顯示
+				if( scorePlus >= 10 ) 
+				{
+					combo.setAnimation(scaleAnime);
+					combo.setVisibility(View.VISIBLE);
+				}
+				else
+				{
+					combo.setVisibility(View.INVISIBLE);
+				}
+				
+				
+				//戳下去時決定多久回復
+				int recoverTime = (int)(Math.random() * tMaxTime) + tBaseTime;
+				v.setId(recoverTime);
+				
+				//將v 加入佇列
+				//st.add(v);
+									
+				v.setBackgroundResource(R.drawable.poke_press_icon);
+				v.setClickable(false);					
+				
+				//記錄最大hits
+				if( regComboScore < scorePlus )
+				{
+					regComboScore = scorePlus;
+				}
+				
+				//道具效果
+									
+				//stStatu 記錄目前的btn是哪個 相等後再隨機決定是否要變為道具
+				for(int i = 0; i < st.size(); i++)
+				{
+					
+					
+					if(st.get(i).equals(v))
+					{
+						//System.out.println(String.valueOf("stStatu: " + stStatu[i] ));
+						//消耗道具
+						switch(Integer.parseInt(String.valueOf(stStatu[i])))
+						{
+							case 1:
+								gTimeText.setText( 
+										String.valueOf(
+											Integer.parseInt(
+												String.valueOf(
+														gTimeText.getText()
+														)
+													) + 3
+											)
+										);
+								itemMsgBox( "Time  +3 !!" );
+								break;
+							case 2:
+								itemMsgBox( "Extra  X 2 !!" );
+								itemScoreDouble();
+								
+							default:
+								break;
+						}
+						
+						
+						//決定下一輪是否有道具
+						if( 0 + (int)(Math.random() * itemRandom) < 1)
+						{
+							
+							stStatu[i] = 1 + (int)(Math.random() * 2);
+							//stStatu[i] = 2;
+						}
+						else
+						{
+							stStatu[i] = 0;
+						}
+					}
+				}
+				
+				//連技標語
+		    	
+				if(scorePlus == 30)
+				{
+					itemComboDescStr = "不錯的連技";
+					itemComboDescMsgBox(itemComboDescStr);
+				} 
+				else if(scorePlus == 70)
+				{
+					itemComboDescStr = "漂亮的連技";
+					itemComboDescMsgBox(itemComboDescStr);
+				}
+				else if(scorePlus == 110)
+				{
+					itemComboDescStr = "你太瘋狂了";
+					itemComboDescMsgBox(itemComboDescStr);
+				}
+				else if(scorePlus == 150)
+				{
+					itemComboDescStr = "有可能嗎!!";
+					itemComboDescMsgBox(itemComboDescStr);
+				}
+				else if(scorePlus == 190)
+				{
+					itemComboDescStr = "這不科學!!";
+					itemComboDescMsgBox(itemComboDescStr);
+				}
+				else if(scorePlus == 220)
+				{
+					itemComboDescStr = "已經沒有人能阻止你啦!!";
+					itemComboDescMsgBox(itemComboDescStr);
+				}
+				else if(scorePlus == 250)
+				{
+					itemComboDescStr = "娘子快來見上帝";
+					itemComboDescMsgBox(itemComboDescStr);
+				}
+				else if(scorePlus == 280)
+				{
+					itemComboDescStr = "神之領域";
+					itemComboDescMsgBox(itemComboDescStr);
+				}
+				
+				
+			}		
+			
+		};
+		
 		//創建場景上按鈕
 		for(int i = 0; i < btnCount ; i++) {
 			
@@ -295,228 +540,10 @@ public class gamePlay extends Activity {
 			
 			x = x + vW / 5;
 			
-			bub.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					
-					//音效
-					pokeSoundEffect();
-					
-					//分數計算
-					String str = score.getText().toString();
-					int s = Integer.parseInt(str);
-					
-					//連技越多 加成分數越多
-					//comboPlus = 0;
-					
-					if(scorePlus >= 30 && scorePlus < 50)
-					{
-						comboPlusShow.setAnimation(cpsScaleAnime);
-						comboPlus = 100;
-						
-						
-					}
-					else if(scorePlus >= 50 && scorePlus < 70)
-					{
-						comboPlus = 200;
-						
-					}
-					else if(scorePlus >= 70 && scorePlus < 90)
-					{
-						comboPlus = 300;
-						
-					}
-					else if(scorePlus >= 90 && scorePlus < 110)
-					{
-						comboPlus = 400;
-						
-					}
-					else if(scorePlus >= 110 && scorePlus < 130)
-					{
-						comboPlus = 550;
-					}
-					else if(scorePlus >= 130 && scorePlus < 150)
-					{
-						comboPlus = 700;
-					}
-					else if(scorePlus >= 150 && scorePlus < 170)
-					{
-						comboPlus = 900;
-					}
-					else if(scorePlus >= 170 && scorePlus < 190)
-					{
-						comboPlus = 1100;
-					}
-					else if(scorePlus >= 190 && scorePlus < 210)
-					{
-						comboPlus = 1400;
-					}
-					else if(scorePlus >= 210 && scorePlus < 230)
-					{
-						comboPlus = 1700;
-						
-					}
-					else if(scorePlus >= 230 && scorePlus < 250)
-					{
-						comboPlus = 2000;
-						
-					}
-					else if(scorePlus >= 250)
-					{
-						comboPlus = 3000;
-						
-					}
-					
-					//大於30後每次加成就跳一次動畫
-					if(scorePlus >= 30)
-					{
-						comboPlusShow.setVisibility(View.VISIBLE);
-						//comboPlusShow.setAnimation(aSet);
-						comboPlusShow.startAnimation(aSet);
-					}
-					
-					//連技加成顯示
-					comboPlusShow.setText("+ " + String.valueOf(comboPlus ) + " !!" );
-					
-					//分數計算
-					int p = s + 1 + scorePlus + (comboPlus * itemScorePlus);
-					score.setText( String.valueOf(p) );
-					
-					//有戳下去就將c = 0; 讓有效combo 持續
-					c = 0;
-					
-					//分數加成
-					scorePlus++;
-					
-					//連技數顯示
-					combo.setText( String.valueOf(scorePlus) + " hits!!");
-					//大於十次連技才顯示
-					if( scorePlus >= 10 ) 
-					{
-						combo.setAnimation(scaleAnime);
-						combo.setVisibility(View.VISIBLE);
-					}
-					else
-					{
-						combo.setVisibility(View.INVISIBLE);
-					}
-					
-					
-					//戳下去時決定多久回復
-					int recoverTime = (int)(Math.random() * tMaxTime) + tBaseTime;
-					v.setId(recoverTime);
-					
-					//將v 加入佇列
-					//st.add(v);
-										
-					v.setBackgroundResource(R.drawable.poke_press_icon);
-					v.setClickable(false);					
-					
-					//記錄最大hits
-					if( regComboScore < scorePlus )
-					{
-						regComboScore = scorePlus;
-					}
-					
-					//道具效果
-										
-					//stStatu 記錄目前的btn是哪個 相等後再隨機決定是否要變為道具
-					for(int i = 0; i < st.size(); i++)
-					{
-						
-						
-						if(st.get(i).equals(v))
-						{
-							//System.out.println(String.valueOf("stStatu: " + stStatu[i] ));
-							//消耗道具
-							switch(stStatu[i])
-							{
-								case 1:
-									gTimeText.setText( 
-											String.valueOf(
-												Integer.parseInt(
-													String.valueOf(
-															gTimeText.getText()
-															)
-														) + 3
-												)
-											);
-									itemMsgBox( "Time  +3 !!" );
-									break;
-								case 2:
-									itemMsgBox( "Extra  X 2 !!" );
-									itemScoreDouble();
-									
-								default:
-									break;
-							}
-							
-							
-							//決定下一輪是否有道具
-							if( 0 + (int)(Math.random() * itemRandom) < 1)
-							{
-								
-								stStatu[i] = 1 + (int)(Math.random() * 2);
-								//stStatu[i] = 2;
-							}
-							else
-							{
-								stStatu[i] = 0;
-							}
-						}
-					}
-					
-					//連技標語
-			    	
-					if(scorePlus == 30)
-					{
-						itemComboDescStr = "不錯的連技";
-						itemComboDescMsgBox(itemComboDescStr);
-					} 
-					else if(scorePlus == 70)
-					{
-						itemComboDescStr = "漂亮的連技";
-						itemComboDescMsgBox(itemComboDescStr);
-					}
-					else if(scorePlus == 110)
-					{
-						itemComboDescStr = "你太瘋狂了";
-						itemComboDescMsgBox(itemComboDescStr);
-					}
-					else if(scorePlus == 150)
-					{
-						itemComboDescStr = "有可能嗎!!";
-						itemComboDescMsgBox(itemComboDescStr);
-					}
-					else if(scorePlus == 190)
-					{
-						itemComboDescStr = "這不科學!!";
-						itemComboDescMsgBox(itemComboDescStr);
-					}
-					else if(scorePlus == 220)
-					{
-						itemComboDescStr = "已經沒有人能阻止你啦!!";
-						itemComboDescMsgBox(itemComboDescStr);
-					}
-					else if(scorePlus == 250)
-					{
-						itemComboDescStr = "娘子快來見上帝";
-						itemComboDescMsgBox(itemComboDescStr);
-					}
-					else if(scorePlus == 280)
-					{
-						itemComboDescStr = "神之領域";
-						itemComboDescMsgBox(itemComboDescStr);
-					}
-					
-					
-				}
-			});
-			
-			
+			bub.setOnClickListener(bubClickEvent);
 		}
+		
+		
 		
 		//將狀態列的layout置前 使得hit及combo能在btn之前
 		gsl.bringToFront();
@@ -553,12 +580,50 @@ public class gamePlay extends Activity {
 			}
 		});
 		
+		
+		
 		//倒數計時開始
 		
 		gTimeText.setText(gTime);
 		threadGameTime();
 	}
 	
+	private void threadGameCountDown() {
+		Thread threadCountDown = new Thread(){
+	    @Override
+	    public void run() {
+	    	while(countDown > 0 ) {
+	        // TODO Auto-generated method stub           
+	    	
+		    	try {
+			    		
+			    		//每1秒檢查一次
+			    		Thread.sleep(1000);
+			    		if( !threadPause )
+			    		{
+			    			
+			    			Message msg = new Message();
+							msg.what = 3;
+							uiMessageHandler.sendMessage(msg);
+							
+			    		}
+		    		
+					}
+				catch(Exception e){
+				    //  e.printStackTrace();
+				    //結束線程
+				    	//thread.interrupt();
+					}
+				finally {
+				    	//System.out.println("finally");
+						//thread.interrupt();
+					}
+			        
+		    	}    
+	    	}
+		};
+		threadCountDown.start();
+	}
 	
 	private void threadResetBtn() {
 		thread = new Thread(){
@@ -695,7 +760,22 @@ public class gamePlay extends Activity {
 					
 					break;
 				case 3:
-					;
+					
+					if(countDown < 1)
+					{
+						gameInit();
+						gameCountDown.setVisibility(View.INVISIBLE);
+					}
+					else
+					{
+						gameCountDown.setVisibility(View.VISIBLE);
+						gameCountDown.setText(String.valueOf(countDown));
+						//gameCountDown.setAnimation(cdAs);
+						gameCountDown.startAnimation(cdAs);
+						countDown--;
+					}
+					
+					//
 					break;
 			}
 		}
@@ -875,6 +955,8 @@ public class gamePlay extends Activity {
 		Cursor cursor = mds.getAll("");
 		System.out.println("getCount: " + cursor.getCount());
 		
+		
+		
 		if(cursor.getCount() == 0)
 		{
 			System.out.println("getCount == 0");
@@ -936,6 +1018,10 @@ public class gamePlay extends Activity {
 					String keyAry[] = {"name", "email", "score", "hits", "level"};
 					String valueAry[] = {name[0], email[0], String.valueOf(score.getText()), String.valueOf(regComboScore), levelStr};
 					urlload.startThread(keyAry,valueAry);
+					
+					isUpdateScore = 1;
+					NewListDataSQL nld = new NewListDataSQL(gamePlay.this);
+					nld.update(insertId, "isUpdatesScore" , String.valueOf(isUpdateScore));
 				}
 			});
 		}
@@ -943,7 +1029,7 @@ public class gamePlay extends Activity {
 		//SQLite
 		
 		NewListDataSQL nld = new NewListDataSQL(gamePlay.this);
-		nld.create(userNmae, Integer.parseInt(String.valueOf(score.getText())), regComboScore, levelStr);
+		insertId = nld.create(userNmae, Integer.parseInt(String.valueOf(score.getText())), regComboScore, levelStr, String.valueOf(isUpdateScore));
 		
 		
 		

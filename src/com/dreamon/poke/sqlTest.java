@@ -22,7 +22,10 @@ import android.widget.Button;
 public class sqlTest extends Activity {
 
 	memberDataSql mds;
+	NewListDataSQL rds;
+	
 	Button deleteMemberTableBtn;
+	Button deleteRankTableBtn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +33,10 @@ public class sqlTest extends Activity {
 		setContentView(R.layout.sql_test);
 		
 		mds = new memberDataSql(sqlTest.this);
-		
+		rds = new NewListDataSQL(sqlTest.this);
 		
 		deleteMemberTableBtn = (Button)findViewById(R.id.deleteMemberTableBtn);
+		deleteRankTableBtn = (Button)findViewById(R.id.deleteRankTableBtn);
 		
 		deleteMemberTableBtn.setOnClickListener(new View.OnClickListener() {
 			
@@ -40,6 +44,15 @@ public class sqlTest extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				mds.deleteTable();
+			}
+		});
+		
+		deleteRankTableBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				rds.deleteTable();
 			}
 		});
 		

@@ -61,6 +61,7 @@ public class gameRank extends Activity {
 	int score[];
 	int hits[];
 	String level[];	
+	String isUpdateScore[];
 	
 	//list view
 	ListView list1;
@@ -213,6 +214,7 @@ public class gameRank extends Activity {
 			score = new int[rows_num];
 			hits = new int[rows_num];
 			level = new String[rows_num];	
+			isUpdateScore = new String[rows_num];
 			
 			for(int n = 0; n < rows_num;n++)
 			{
@@ -224,6 +226,7 @@ public class gameRank extends Activity {
 					name[n] = String.valueOf(obj2.get("name"));
 					hits[n] = Integer.parseInt(String.valueOf(obj2.get("hits")));
 					level[n] = String.valueOf(obj2.get("level"));
+					isUpdateScore[n] = String.valueOf(obj2.get("isUpdateScore"));
 				}
 			}
 			
@@ -234,7 +237,7 @@ public class gameRank extends Activity {
 				//put( list_view.xml => itemDesc, "tittle text");
 				//String[] code = codeArray[i].split("::");
 				map.put("itemScore", String.valueOf(score[i]));
-				map.put("itemDesc", String.valueOf("Name: " + name[i] + " Hits: " + hits[i] + " Level: " + level[i]));
+				map.put("itemDesc", String.valueOf("Name: " + name[i] + " Hits: " + hits[i] + " Level: " + level[i]) + " isUpdate: " + isUpdateScore[i]);
 				myList2.add(map);
 			}
 			
@@ -252,52 +255,66 @@ public class gameRank extends Activity {
 	
 	public void myNote(){
 		
-		Cursor cursor = helper.getAll("order by score desc");
-		int rows_num = cursor.getCount();	//取得資料表列數
-		
-		id = new int[rows_num];
-		name = new String[rows_num];
-		score = new int[rows_num];
-		hits = new int[rows_num];
-		level = new String[rows_num];	
-		 //用陣列存資料
-		
-		String[] sNote = new String[cursor.getCount()];
-						 
-		if(rows_num != 0) {
-			cursor.moveToFirst();			//將指標移至第一筆資料
-			for(int i=0; i<rows_num; i++) {
-				id[i] = cursor.getInt(0);	//取得第0欄的資料，根據欄位type使用適當語法
-				name[i] = cursor.getString(1);
-				score[i] = cursor.getInt(2);
-				hits[i] = cursor.getInt(3);
-				level[i] = cursor.getString(4);
- 
-				cursor.moveToNext();		//將指標移至下一筆資料
-				
-				//System.out.println(id[i] + " " + name[i] + " " + score[i] + " " + hits[i] + " " + level[i] );
-			}
-		}
-		cursor.close();
-		
-		for(int i = 0; i < id.length; i++)
+		if(helper.getAll("order by score desc") != null)
 		{
-			HashMap<String, String> map = new HashMap<String, String>(); 
-			//put( list_view.xml => itemTitle, "tittle text");
-			//put( list_view.xml => itemDesc, "tittle text");
-			//String[] code = codeArray[i].split("::");
-			map.put("itemScore", String.valueOf(score[i]));
-			map.put("itemDesc", String.valueOf("Name: " + name[i] + " Hits: " + hits[i] + " Level: " + level[i]));
-			myList1.add(map);
+			Cursor cursor = helper.getAll("order by score desc");
+			int rows_num = cursor.getCount();	//取得資料表列數
+			
+			id = new int[rows_num];
+			name = new String[rows_num];
+			score = new int[rows_num];
+			hits = new int[rows_num];
+			level = new String[rows_num];
+			isUpdateScore = new String[rows_num];
+			
+			 //用陣列存資料
+			
+			String[] sNote = new String[cursor.getCount()];
+							 
+			if(rows_num != 0) {
+				cursor.moveToFirst();			//將指標移至第一筆資料
+				for(int i=0; i<rows_num; i++) {
+					id[i] = cursor.getInt(0);	//取得第0欄的資料，根據欄位type使用適當語法
+					name[i] = cursor.getString(1);
+					score[i] = cursor.getInt(2);
+					hits[i] = cursor.getInt(3);
+					level[i] = cursor.getString(4);
+					isUpdateScore[i] = cursor.getString(5);
+	 
+					cursor.moveToNext();		//將指標移至下一筆資料
+					
+					//System.out.println(id[i] + " " + name[i] + " " + score[i] + " " + hits[i] + " " + level[i] );
+				}
+			}
+			cursor.close();
+			
+			for(int i = 0; i < id.length; i++)
+			{
+				HashMap<String, String> map = new HashMap<String, String>(); 
+				//put( list_view.xml => itemTitle, "tittle text");
+				//put( list_view.xml => itemDesc, "tittle text");
+				//String[] code = codeArray[i].split("::");
+				map.put("itemScore", String.valueOf(score[i]));
+				map.put("itemDesc", String.valueOf("Name: " + name[i] + " Hits: " + hits[i] + " Level: " + level[i] + " isUpdateScore: " + isUpdateScore[i]));
+				myList1.add(map);
+			}
+			
+			SimpleAdapter lsa = new SimpleAdapter(gameRank.this, 
+					myList1, 
+									R.layout.rank_list, 
+									new String[]{"itemScore", "itemDesc"}, 
+									new int[] {R.id.itemScore, R.id.itemDesc} 
+									);
+			list1.setAdapter(lsa);
+			
+			//System.out.println("1");
+		}
+		else
+		{
+			//System.out.println("0");
 		}
 		
-		SimpleAdapter lsa = new SimpleAdapter(gameRank.this, 
-				myList1, 
-								R.layout.rank_list, 
-								new String[]{"itemScore", "itemDesc"}, 
-								new int[] {R.id.itemScore, R.id.itemDesc} 
-								);
-		list1.setAdapter(lsa);
+		
 		//dbHelper.close();//關閉資料庫，釋放記憶體，還需使用時不要關閉
 		  
 		//System.out.println("num: " + rows_num);

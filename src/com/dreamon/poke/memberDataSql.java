@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class memberDataSql extends SQLiteOpenHelper {
 
-	private static final int VERSION = 3;//資料庫版本  
+	private static final int VERSION = 4;//資料庫版本  
 	private final static String name = "poke.db"; 
 	
 	private final static String _TableName = "poke_member";

@@ -104,12 +104,26 @@
     
     <RelativeLayout 
         android:id="@+id/gamePlayLayout"
-        android:layout_below="@+id/gameStatuLayout"
+        android:layout_marginTop="30dp"
     	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
+    	android:layout_height="fill_parent"
         >
         
-        
+        <TextView
+            android:id="@+id/gameCountDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="30dp"
+            android:shadowColor="#333"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="3"
+            android:textColor="#ff0000"
+            android:textSize="300sp"
+            android:visibility="invisible" />
         
     </RelativeLayout>
     
