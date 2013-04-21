@@ -882,6 +882,9 @@ public class gamePlay extends Activity {
 	}
 	
 	private void gameOver() {
+		NewListDataSQL nld = new NewListDataSQL(gamePlay.this);
+		
+		
 		gameStatus = gameOver;
 		
 		timer.cancel();
@@ -953,13 +956,13 @@ public class gamePlay extends Activity {
 		//mds.create("ghost", "ghost@email.com");
 		
 		Cursor cursor = mds.getAll("");
-		System.out.println("getCount: " + cursor.getCount());
+		cursor.moveToFirst();
 		
-		
-		
-		if(cursor.getCount() == 0)
+		System.out.println("count: " + cursor.getCount());
+				
+		if(cursor.getCount() > 0)
 		{
-			System.out.println("getCount == 0");
+			System.out.println("getCount > 0");
 			updateBtn.setVisibility(View.INVISIBLE);
 			registerBtn.setVisibility(View.VISIBLE);
 			registerDesc.setVisibility(View.VISIBLE);
@@ -1028,10 +1031,16 @@ public class gamePlay extends Activity {
 		
 		//SQLite
 		
-		NewListDataSQL nld = new NewListDataSQL(gamePlay.this);
 		insertId = nld.create(userNmae, Integer.parseInt(String.valueOf(score.getText())), regComboScore, levelStr, String.valueOf(isUpdateScore));
-		
-		
+		/*
+		Cursor nldCur = nld.getAll("");
+		if(nldCur.getCount() == 0)
+		{
+			NewListDataSQL rankData = new NewListDataSQL(gamePlay.this);
+			//rankData.create(userNmae, Integer.parseInt(String.valueOf(score.getText())), regComboScore, levelStr, String.valueOf(isUpdateScore));
+			rankData.onCreate(nld);
+		}
+		*/
 		
 	}
 	

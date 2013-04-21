@@ -5,12 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class memberDataSql extends SQLiteOpenHelper {
 
-	private static final int VERSION = 4;//資料庫版本  
+	private static final int VERSION = 7;//資料庫版本  
 	private final static String name = "poke.db"; 
 	
 	private final static String _TableName = "poke_member";
@@ -36,7 +37,7 @@ public class memberDataSql extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		 String DATABASE_CREATE_TABLE =
-			     "create table poke_member  ("
+			     "create table if not exists poke_member  ("
 			       + "_ID INTEGER PRIMARY KEY  AUTOINCREMENT,"
 			             + "name TEXT,"
 			             + "email TEXT"
@@ -48,14 +49,25 @@ public class memberDataSql extends SQLiteOpenHelper {
 	
 	// 取得所有記錄
 	public Cursor getAll(String order) {
+		Cursor c;
 		if(order == null)
 		{
 			order = "";
 		}
-		System.out.println(db.rawQuery("SELECT * FROM poke_member " + order , null));
-		Cursor c = db.rawQuery("SELECT * FROM poke_member " + order , null);
-		System.out.println("getCount: " + c.getCount());
-	    return db.rawQuery("SELECT * FROM poke_member " + order , null);
+		
+		try{
+			c = db.rawQuery("SELECT * FROM poke_member " + order , null);
+			return c;
+		}
+		catch (SQLiteException e)
+		{
+			c = null;
+			return c;
+		}
+		//System.out.println(db.rawQuery("SELECT * FROM poke_member " + order , null));
+		
+		//System.out.println("getCount: " + c.getCount());
+	   // return db.rawQuery("SELECT * FROM poke_member " + order , null);
 	}
 	
 	// 取得一筆紀錄
@@ -96,9 +108,10 @@ public class memberDataSql extends SQLiteOpenHelper {
 	}
 	
 	//修改記錄，回傳成功修改筆數
-	public int update(long rowId, String value) {
+	public int update(long rowId, String name, String email) {
 		ContentValues args = new ContentValues();
-		args.put("value", value);
+		args.put("name", name);
+		args.put("email", email);
  
 		return db.update("poke_member",	//資料表名稱
 		args,				//VALUE

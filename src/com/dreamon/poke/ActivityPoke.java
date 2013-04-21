@@ -14,6 +14,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,6 +28,7 @@ public class ActivityPoke extends Activity {
 	Button rankBtn;
 	Button testBtn;
 	
+	@SuppressWarnings("null")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,6 +76,16 @@ public class ActivityPoke extends Activity {
 				ActivityPoke.this.startActivity(it);
 			}
 		});
+		
+		//§PÂ_¬O§_¦³µù¥U
+		String userNmae = "ghost";
+		memberDataSql mds = new memberDataSql(ActivityPoke.this);
+		//mds.create("ghost", "ghost@email.com");
+		
+		
+		
+	//	nld.onCreate(db);
+		
 		
 	}
 

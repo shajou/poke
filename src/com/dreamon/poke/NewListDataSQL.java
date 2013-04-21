@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class NewListDataSQL extends SQLiteOpenHelper {
 
-	private static final int VERSION = 4;//資料庫版本  
+	private static final int VERSION = 7;//資料庫版本  
 	private final static String name = "poke.db"; 
 	
 	private final static String _TableName = "poke_rank";
@@ -37,8 +37,8 @@ public class NewListDataSQL extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		 String DATABASE_CREATE_TABLE =
-			     "create table if not exists poke_rank  ("
-			       + "_ID INTEGER PRIMARY KEY  AUTOINCREMENT,"
+			     "CREATE TABLE poke_rank ("
+			       + "_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			             + "name TEXT,"
 			             + "score INTEGER,"
 			             + "hits INTEGER,"
@@ -46,6 +46,8 @@ public class NewListDataSQL extends SQLiteOpenHelper {
 			             + "isUpdatesScore TEXT"
 			         + ")";
 		 db.execSQL(DATABASE_CREATE_TABLE);
+		 
+		 System.out.println("onCreate");
 	}
 	
 	// 取得所有記錄
@@ -63,6 +65,7 @@ public class NewListDataSQL extends SQLiteOpenHelper {
 		}
 		catch (SQLiteException e)
 		{
+			onCreate(db);
 			cursor = null;
 			return cursor;
 		}
@@ -98,8 +101,20 @@ public class NewListDataSQL extends SQLiteOpenHelper {
 		args.put("hits", hits);
 		args.put("level", level);
 		args.put("isUpdatesScore", isUpdatesScore);
- 
-		return db.insert("poke_rank", null, args);
+		
+		try{
+			//cursor = db.rawQuery("SELECT * FROM poke_rank " + order , null);
+			return db.insert("poke_rank", null, args);
+		}
+		catch (SQLiteException e)
+		{
+			onCreate(db);
+			db.insert("poke_rank", null, args);
+			
+			return db.insert("poke_rank", null, args);
+		}
+		
+		
     }
 	
 	//刪除記錄，回傳成功刪除筆數

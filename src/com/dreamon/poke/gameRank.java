@@ -62,6 +62,10 @@ public class gameRank extends Activity {
 	int hits[];
 	String level[];	
 	String isUpdateScore[];
+	String email[];
+	int rows_num;
+	
+	
 	
 	//list view
 	ListView list1;
@@ -72,6 +76,7 @@ public class gameRank extends Activity {
 	//Button
 	Button globalBtn;
 	Button localBtn;
+	Button updLoclBestBtn;
 	int gb = 0;
 	int lb = 0;
 	
@@ -129,6 +134,19 @@ public class gameRank extends Activity {
 				switchRank(2);
 			}
 		});
+		
+		//updLoclBestBtn
+		updLoclBestBtn = (Button)findViewById(R.id.updLoclBestBtn);
+		updLoclBestBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				switchRank(3);
+			}
+		});
+		
 		
 		//switchRank(2);
 		
@@ -193,6 +211,11 @@ public class gameRank extends Activity {
 					list1.setVisibility(View.INVISIBLE);
 					list2.setVisibility(View.VISIBLE);
 				}
+				
+				
+				
+				break;
+			case 3:
 				
 				
 				
@@ -265,6 +288,7 @@ public class gameRank extends Activity {
 			score = new int[rows_num];
 			hits = new int[rows_num];
 			level = new String[rows_num];
+			//email = new String[rows_num];
 			isUpdateScore = new String[rows_num];
 			
 			 //用陣列存資料
@@ -279,6 +303,7 @@ public class gameRank extends Activity {
 					score[i] = cursor.getInt(2);
 					hits[i] = cursor.getInt(3);
 					level[i] = cursor.getString(4);
+					
 					isUpdateScore[i] = cursor.getString(5);
 	 
 					cursor.moveToNext();		//將指標移至下一筆資料
@@ -319,6 +344,47 @@ public class gameRank extends Activity {
 		  
 		//System.out.println("num: " + rows_num);
 		//return sNote;
+	}
+	
+	public void updBestLocalScore() {
+		
+		if(isUpdateScore[0] != "1")
+		{
+			//判斷是否有註冊
+			
+			memberDataSql mds = new memberDataSql(gameRank.this);		
+			Cursor cursor = mds.getAll("");
+			int rows_num = cursor.getCount();
+			email = new String[rows_num];
+			int localId[] = new int[rows_num];
+			String localName[] = new String[rows_num];
+			
+			//取使用者資料
+			if(rows_num != 0) {
+				cursor.moveToFirst();			//將指標移至第一筆資料
+				for(int i=0; i<rows_num; i++) {
+					localId[i] = cursor.getInt(0);	//取得第0欄的資料，根據欄位type使用適當語法
+					localName[i] = cursor.getString(1);
+					email[i] = cursor.getString(2);
+					cursor.moveToNext();		//將指標移至下一筆資料
+					//System.out.println(id[i] + " " + name[i] + " " + score[i] + " " + hits[i] + " " + level[i] );
+				}
+			}
+			cursor.close();
+			
+			//將第一筆高分 上傳資料至遠端
+			urlLoad urlload = new urlLoad();
+			urlload.setUrl("http://poke.grtimed.com/upd_rank.php");
+			String keyAry[] = {"name", "email", "score", "hits", "level"};
+			String valueAry[] = {localName[0], email[0], String.valueOf(score[0]), String.valueOf(hits[0]), level[0]};
+			urlload.startThread(keyAry,valueAry);
+			
+			//isUpdateScore = 1;
+			NewListDataSQL nld = new NewListDataSQL(gameRank.this);
+			nld.update(id[0], "isUpdatesScore" , String.valueOf(isUpdateScore));
+		}
+		
+		
 	}
 
 }

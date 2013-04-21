@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +30,7 @@ public class register extends Activity {
 	TextView responseText;
 	
 	memberDataSql mds;
+	Long id;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,10 @@ public class register extends Activity {
 		ActivityPoke.this.startActivity(it);
 		*/
 		
+		Cursor cursor = mds.getAll("");
+		cursor.moveToFirst();
+		id = cursor.getLong(0);
+		
 		registerBtn = (Button)findViewById(R.id.registerBtn);
 		nameText = (TextView)findViewById(R.id.nameText);
 		emailText = (TextView)findViewById(R.id.emailText);
@@ -54,7 +60,7 @@ public class register extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				
-				if( mds.create(String.valueOf(nameText.getText()), String.valueOf(emailText.getText())) != -1 )
+				if( mds.update(id, String.valueOf(nameText.getText()), String.valueOf(emailText.getText())) != -1 )
 				{
 					register.this.finish();
 				}

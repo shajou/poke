@@ -13,7 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="30dp" >
+        android:layout_marginBottom="10dp" >
         
         <Button 
             android:id="@+id/localBtn"
@@ -49,7 +49,7 @@
         android:layout_below="@+id/switchLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp" >
+        android:layout_marginBottom="50dp" >
         
         <ListView
 	        android:id="@+id/listView1"
@@ -63,11 +63,23 @@
 	        android:layout_height="wrap_content"
 	        >
     	</ListView>
+    	
+        
         
     </RelativeLayout>
 
-    
+    <RelativeLayout
+        android:id="@+id/btnLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lvLayout"
+        android:layout_alignParentBottom="true" >
 
-    
+        <Button
+            android:id="@+id/updLoclBestBtn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="上傳本機最好成績" />
+    </RelativeLayout>
 
 </RelativeLayout>
