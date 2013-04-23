@@ -139,7 +139,7 @@ public class gamePlay extends Activity {
 	int gameTimeHandler = 2;
 	private Thread gTimeThread = null;
 	int gTimeOut = 1000;
-	String gTime = "1";
+	String gTime = "60";
 	public static TextView gTimeText;
 	
 	//¥\¯à«ö¶s

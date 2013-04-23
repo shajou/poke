@@ -63,8 +63,15 @@ public class gameRank extends Activity {
 	int hits[];
 	String level[];	
 	String isUpdateScore[];
+	String localIsUpdateScore[];
 	String email[];
 	int rows_num;
+	
+	int localId[];
+	String localName[];
+	int localScore[];
+	int localHits[];
+	String localLevel[];
 	
 	
 	
@@ -193,9 +200,12 @@ public class gameRank extends Activity {
 				
 				list1.setVisibility(View.VISIBLE);
 				list2.setVisibility(View.INVISIBLE);
+				
+				updLoclBestBtn.setVisibility(View.VISIBLE);
+				
 				break;
 			case 2:
-				
+				updLoclBestBtn.setVisibility(View.INVISIBLE);
 				//System.out.println(netBoo);
 				if(netBoo == false)
 				{
@@ -268,6 +278,8 @@ public class gameRank extends Activity {
 	}
 	
 	private void addGlobalRank() {
+		
+		
 			
 		String str = sqlData.result();
 		
@@ -327,13 +339,13 @@ public class gameRank extends Activity {
 			Cursor cursor = helper.getAll("order by score desc");
 			int rows_num = cursor.getCount();	//取得資料表列數
 			
-			id = new int[rows_num];
-			name = new String[rows_num];
-			score = new int[rows_num];
-			hits = new int[rows_num];
-			level = new String[rows_num];
+			localId = new int[rows_num];
+			localName = new String[rows_num];
+			localScore = new int[rows_num];
+			localHits = new int[rows_num];
+			localLevel = new String[rows_num];
 			//email = new String[rows_num];
-			isUpdateScore = new String[rows_num];
+			localIsUpdateScore = new String[rows_num];
 			
 			 //用陣列存資料
 			
@@ -342,13 +354,13 @@ public class gameRank extends Activity {
 			if(rows_num != 0) {
 				cursor.moveToFirst();			//將指標移至第一筆資料
 				for(int i=0; i<rows_num; i++) {
-					id[i] = cursor.getInt(0);	//取得第0欄的資料，根據欄位type使用適當語法
-					name[i] = cursor.getString(1);
-					score[i] = cursor.getInt(2);
-					hits[i] = cursor.getInt(3);
-					level[i] = cursor.getString(4);
+					localId[i] = cursor.getInt(0);	//取得第0欄的資料，根據欄位type使用適當語法
+					localName[i] = cursor.getString(1);
+					localScore[i] = cursor.getInt(2);
+					localHits[i] = cursor.getInt(3);
+					localLevel[i] = cursor.getString(4);
 					
-					isUpdateScore[i] = cursor.getString(5);
+					localIsUpdateScore[i] = cursor.getString(5);
 	 
 					cursor.moveToNext();		//將指標移至下一筆資料
 					
@@ -357,14 +369,14 @@ public class gameRank extends Activity {
 			}
 			cursor.close();
 			
-			for(int i = 0; i < id.length; i++)
+			for(int i = 0; i < localId.length; i++)
 			{
 				HashMap<String, String> map = new HashMap<String, String>(); 
 				//put( list_view.xml => itemTitle, "tittle text");
 				//put( list_view.xml => itemDesc, "tittle text");
 				//String[] code = codeArray[i].split("::");
-				map.put("itemScore", String.valueOf(score[i]));
-				map.put("itemDesc", String.valueOf("Name: " + name[i] + " Hits: " + hits[i] + " Level: " + level[i] + " isUpdateScore: " + isUpdateScore[i]));
+				map.put("itemScore", String.valueOf(localScore[i]));
+				map.put("itemDesc", String.valueOf("Name: " + localName[i] + " Hits: " + localHits[i] + " Level: " + localLevel[i] + " isUpdateScore: " + localIsUpdateScore[i]));
 				myList1.add(map);
 			}
 			
@@ -392,7 +404,7 @@ public class gameRank extends Activity {
 	
 	public void updBestLocalScore() {
 		
-		if(isUpdateScore[0] != "1")
+		if(!localIsUpdateScore[0].equals("1"))
 		{
 			
 			
@@ -400,14 +412,14 @@ public class gameRank extends Activity {
 			Cursor cursor = mds.getAll("");
 			int rows_num = cursor.getCount();
 			email = new String[rows_num];
-			int localId[] = new int[rows_num];
+			int mId[] = new int[rows_num];
 			String localName[] = new String[rows_num];
 			
 			//取使用者資料
 			if(rows_num != 0) {
 				cursor.moveToFirst();			//將指標移至第一筆資料
 				for(int i=0; i<rows_num; i++) {
-					localId[i] = cursor.getInt(0);	//取得第0欄的資料，根據欄位type使用適當語法
+					mId[i] = cursor.getInt(0);	//取得第0欄的資料，根據欄位type使用適當語法
 					localName[i] = cursor.getString(1);
 					email[i] = cursor.getString(2);
 					cursor.moveToNext();		//將指標移至下一筆資料
@@ -421,12 +433,18 @@ public class gameRank extends Activity {
 			urlload.act = 1;
 			urlload.setUrl("http://poke.grtimed.com/upd_rank.php");
 			String keyAry[] = {"name", "email", "score", "hits", "level"};
-			String valueAry[] = {localName[0], email[0], String.valueOf(score[0]), String.valueOf(hits[0]), level[0]};
+			String valueAry[] = {localName[0], email[0], String.valueOf(localScore[0]), String.valueOf(localHits[0]), localLevel[0]};
 			urlload.startThread(keyAry,valueAry);
 			
 			//isUpdateScore = 1;
 			NewListDataSQL nld = new NewListDataSQL(gameRank.this);
-			nld.update(id[0], "isUpdatesScore" , "1");
+			nld.update(localId[0], "isUpdatesScore" , "1");
+			
+			
+			//Intent it = new Intent(getBaseContext(), gameRank.class);
+			//it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			//gameRank.this.startActivity(it);
+			gameRank.this.finish();
 		}
 		
 		
