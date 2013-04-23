@@ -107,6 +107,13 @@ public class memberDataSql extends SQLiteOpenHelper {
 		);
 	}
 	
+	public int deleteAll() {
+		return db.delete("poke_member",	//資料表名稱
+		null,			//WHERE
+		null				//WHERE的參數
+		);
+	}
+	
 	//修改記錄，回傳成功修改筆數
 	public int update(long rowId, String name, String email) {
 		ContentValues args = new ContentValues();

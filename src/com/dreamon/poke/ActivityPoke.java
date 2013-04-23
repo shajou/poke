@@ -80,6 +80,11 @@ public class ActivityPoke extends Activity {
 		//§PÂ_¬O§_¦³µù¥U
 		String userNmae = "ghost";
 		memberDataSql mds = new memberDataSql(ActivityPoke.this);
+		Cursor cursor = mds.getAll("");
+		if(cursor.getCount() == 0)
+		{
+			mds.create("ghost", "ghost@email.com");
+		}
 		//mds.create("ghost", "ghost@email.com");
 		
 		

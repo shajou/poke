@@ -35,6 +35,7 @@ public class urlLoad extends Activity {
 	String getUrl = "";
 	String postResult = "";
 	String getResult = "";
+	public static int act = 0;
 	//HttpClient client;
 	//HttpPost post;
 	//HttpResponse response;
@@ -137,7 +138,16 @@ public class urlLoad extends Activity {
 					if(result != null)
 					{
 						//上傳完畢就關閉按鈕
-						gamePlay.updateBtn.setVisibility(View.INVISIBLE);
+						switch(act)
+						{
+							case 0:
+								gamePlay.updateBtn.setVisibility(View.INVISIBLE);
+							break;
+								
+							case 1:
+							break;
+						}
+						
 						System.out.println(result);
 					}
 					

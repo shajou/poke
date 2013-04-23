@@ -25,7 +25,7 @@
             />
         
         <TextView 
-            android:id="@+id/localBtn"
+            android:id="@+id/des"
             android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:layout_alignParentTop="true"
@@ -80,6 +80,37 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="上傳本機最好成績" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/regLayout"
+        android:visibility="invisible"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+		
+		<TextView
+	            android:id="@+id/registerDesc"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerHorizontal="true"
+	            android:layout_marginTop="30dp"
+	            android:gravity="center|center_horizontal"
+	           
+	            android:text="註冊後才能上傳成績喔！"
+	            android:textColor="#ffffff"
+	            android:textSize="30sp"
+	            android:color="#ffffff" />
+		
+        <Button
+	          android:id="@+id/registerBtn"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_centerHorizontal="true"
+	          android:layout_below="@+id/registerDesc"
+	          android:layout_marginTop="30dp"
+	          android:text="註冊" />
+        
+        
     </RelativeLayout>
 
 </RelativeLayout>

@@ -951,22 +951,24 @@ public class gamePlay extends Activity {
 		gameOverCombo.setText( String.valueOf(regComboScore) + " hits" );
 		
 		//判斷是否有註冊
-		String userNmae = "ghost";
+		String userName = "ghost";
 		memberDataSql mds = new memberDataSql(gamePlay.this);
-		//mds.create("ghost", "ghost@email.com");
-		
-		Cursor cursor = mds.getAll("");
+		//
+		Cursor cursor = mds.getAll("");				
 		cursor.moveToFirst();
 		
-		System.out.println("count: " + cursor.getCount());
+		//System.out.println("get: " + String.valueOf(cursor.getString(1)) + " type: " + cursor.getString(1).getClass());
+		//System.out.println("username: " + userName);
+		
+		//System.out.println("1: " + String.valueOf(cursor.getString(1)) == userName);
 				
-		if(cursor.getCount() > 0)
+		/*if(cursor.getString(1).equals(userName))
 		{
-			System.out.println("getCount > 0");
+			System.out.println("getCount: " + cursor.getCount());
 			updateBtn.setVisibility(View.INVISIBLE);
 			registerBtn.setVisibility(View.VISIBLE);
 			registerDesc.setVisibility(View.VISIBLE);
-			userNmae = "ghost";
+			//userNmae = "ghost";
 			
 			registerBtn.setOnClickListener(new View.OnClickListener() {
 				
@@ -980,11 +982,11 @@ public class gamePlay extends Activity {
 			});
 		}
 		else
-		{
-			updateBtn.setVisibility(View.VISIBLE);
+		{*/
+			/*updateBtn.setVisibility(View.VISIBLE);
 			registerBtn.setVisibility(View.INVISIBLE);
 			registerDesc.setVisibility(View.INVISIBLE);
-			
+			*/
 			
 			int rows_num = cursor.getCount();	//取得資料表列數
 			int id[] = new int[rows_num];
@@ -1007,7 +1009,7 @@ public class gamePlay extends Activity {
 			}
 			cursor.close();
 			
-			userNmae = name[0];
+			userName = name[0];
 			
 			updateBtn.setOnClickListener(new View.OnClickListener() {
 				
@@ -1016,8 +1018,10 @@ public class gamePlay extends Activity {
 					// TODO Auto-generated method stub
 					
 					//上傳資料至遠端
+					/*
 					urlLoad urlload = new urlLoad();
 					urlload.setUrl("http://poke.grtimed.com/upd_rank.php");
+					urlload.act = 0;
 					String keyAry[] = {"name", "email", "score", "hits", "level"};
 					String valueAry[] = {name[0], email[0], String.valueOf(score.getText()), String.valueOf(regComboScore), levelStr};
 					urlload.startThread(keyAry,valueAry);
@@ -1025,13 +1029,14 @@ public class gamePlay extends Activity {
 					isUpdateScore = 1;
 					NewListDataSQL nld = new NewListDataSQL(gamePlay.this);
 					nld.update(insertId, "isUpdatesScore" , String.valueOf(isUpdateScore));
+					*/
 				}
 			});
-		}
+		//}
 		
 		//SQLite
 		
-		insertId = nld.create(userNmae, Integer.parseInt(String.valueOf(score.getText())), regComboScore, levelStr, String.valueOf(isUpdateScore));
+		insertId = nld.create(userName, Integer.parseInt(String.valueOf(score.getText())), regComboScore, levelStr, String.valueOf(isUpdateScore));
 		/*
 		Cursor nldCur = nld.getAll("");
 		if(nldCur.getCount() == 0)

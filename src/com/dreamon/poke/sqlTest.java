@@ -26,6 +26,7 @@ public class sqlTest extends Activity {
 	
 	Button deleteMemberTableBtn;
 	Button deleteRankTableBtn;
+	Button deleteMemberDataBtn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class sqlTest extends Activity {
 		rds = new NewListDataSQL(sqlTest.this);
 		
 		deleteMemberTableBtn = (Button)findViewById(R.id.deleteMemberTableBtn);
+		deleteMemberDataBtn = (Button)findViewById(R.id.deleteMemberDataBtn);
 		deleteRankTableBtn = (Button)findViewById(R.id.deleteRankTableBtn);
 		
 		deleteMemberTableBtn.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +48,17 @@ public class sqlTest extends Activity {
 				mds.deleteTable();
 			}
 		});
+		
+		deleteMemberDataBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mds.deleteAll();
+			}
+		});
+		
+		
 		
 		deleteRankTableBtn.setOnClickListener(new View.OnClickListener() {
 			

@@ -20,11 +20,21 @@
         android:text="刪除membber資料表" />
     
     <Button
+        android:id="@+id/deleteMemberDataBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="刪除member所有資料" />
+    
+    <Button
         android:id="@+id/deleteRankTableBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:text="刪除RANK資料表" />
+    
+    
 
 </LinearLayout>

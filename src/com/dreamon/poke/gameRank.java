@@ -24,6 +24,7 @@ import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -77,6 +78,10 @@ public class gameRank extends Activity {
 	Button globalBtn;
 	Button localBtn;
 	Button updLoclBestBtn;
+	Button registerBtn;
+	
+	TextView registerDesc;
+	
 	int gb = 0;
 	int lb = 0;
 	
@@ -84,6 +89,9 @@ public class gameRank extends Activity {
 	ConnectivityManager conManager;
 	NetworkInfo networInfo;
 	boolean netBoo = false;
+	
+	//layout
+	RelativeLayout regLayout;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,6 +111,11 @@ public class gameRank extends Activity {
 		list1 = (ListView)findViewById(R.id.listView1);
 		list2 = (ListView)findViewById(R.id.listView2);
 		list2.setVisibility(View.INVISIBLE);
+		
+		//reg
+		registerBtn = (Button)findViewById(R.id.registerBtn);
+		registerDesc = (TextView)findViewById(R.id.registerDesc);
+		regLayout = (RelativeLayout)findViewById(R.id.regLayout);
 		
 		//ListView for SlidingDrawer
 		myList1 = new ArrayList<HashMap<String, String>>();
@@ -216,6 +229,37 @@ public class gameRank extends Activity {
 				
 				break;
 			case 3:
+				String userName = "ghost";
+				memberDataSql mds = new memberDataSql(gameRank.this);
+				//
+				Cursor cursor = mds.getAll("");				
+				cursor.moveToFirst();
+				
+				if(cursor.getString(1).equals(userName))
+				{
+					
+					System.out.println("getCount: " + cursor.getCount());
+					//updateBtn.setVisibility(View.INVISIBLE);
+					regLayout.setVisibility(View.VISIBLE);
+					//registerBtn.setVisibility(View.VISIBLE);
+					//registerDesc.setVisibility(View.VISIBLE);
+					//userNmae = "ghost";
+					
+					registerBtn.setOnClickListener(new View.OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							Intent it = new Intent();
+							it.setClass(gameRank.this, register.class);
+							gameRank.this.startActivity(it);
+						}
+					});
+				}
+				else
+				{
+					updBestLocalScore();
+				}
 				
 				
 				
@@ -350,7 +394,7 @@ public class gameRank extends Activity {
 		
 		if(isUpdateScore[0] != "1")
 		{
-			//判斷是否有註冊
+			
 			
 			memberDataSql mds = new memberDataSql(gameRank.this);		
 			Cursor cursor = mds.getAll("");
@@ -374,6 +418,7 @@ public class gameRank extends Activity {
 			
 			//將第一筆高分 上傳資料至遠端
 			urlLoad urlload = new urlLoad();
+			urlload.act = 1;
 			urlload.setUrl("http://poke.grtimed.com/upd_rank.php");
 			String keyAry[] = {"name", "email", "score", "hits", "level"};
 			String valueAry[] = {localName[0], email[0], String.valueOf(score[0]), String.valueOf(hits[0]), level[0]};
@@ -381,7 +426,7 @@ public class gameRank extends Activity {
 			
 			//isUpdateScore = 1;
 			NewListDataSQL nld = new NewListDataSQL(gameRank.this);
-			nld.update(id[0], "isUpdatesScore" , String.valueOf(isUpdateScore));
+			nld.update(id[0], "isUpdatesScore" , "1");
 		}
 		
 		

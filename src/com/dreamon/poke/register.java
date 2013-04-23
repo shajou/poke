@@ -30,6 +30,8 @@ public class register extends Activity {
 	TextView responseText;
 	
 	memberDataSql mds;
+	NewListDataSQL nld;
+	
 	Long id;
 	
 	@Override
@@ -62,7 +64,21 @@ public class register extends Activity {
 				
 				if( mds.update(id, String.valueOf(nameText.getText()), String.valueOf(emailText.getText())) != -1 )
 				{
-					register.this.finish();
+					//replace name
+					nld = new NewListDataSQL(register.this);
+					Cursor cursor = nld.getAll("");
+					cursor.moveToFirst();
+					for(int j = 0; j < cursor.getCount(); j++)
+					{
+						nld.update(cursor.getLong(0), "name", String.valueOf(nameText.getText()) );
+						//nld.update(cursor.getLong(0), "email", String.valueOf(emailText.getText()) );
+						cursor.moveToNext();
+					}
+					
+					Intent it = new Intent(getBaseContext(), gameRank.class);
+					it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					register.this.startActivity(it);
+					//register.this.finish();
 				}
 				else
 				{
