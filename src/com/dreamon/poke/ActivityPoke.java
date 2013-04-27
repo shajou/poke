@@ -61,6 +61,7 @@ public class ActivityPoke extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent it = new Intent();
+				it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 				it.setClass(ActivityPoke.this, gameRank.class);
 				ActivityPoke.this.startActivity(it);
 			}

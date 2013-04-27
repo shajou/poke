@@ -261,6 +261,7 @@ public class gameRank extends Activity {
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
 							Intent it = new Intent();
+							it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY );
 							it.setClass(gameRank.this, register.class);
 							gameRank.this.startActivity(it);
 						}
@@ -428,6 +429,7 @@ public class gameRank extends Activity {
 			}
 			cursor.close();
 			
+			/*
 			//將第一筆高分 上傳資料至遠端
 			urlLoad urlload = new urlLoad();
 			urlload.act = 1;
@@ -444,7 +446,20 @@ public class gameRank extends Activity {
 			//Intent it = new Intent(getBaseContext(), gameRank.class);
 			//it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			//gameRank.this.startActivity(it);
-			gameRank.this.finish();
+			gameRank.this.finish();*/
+			Bundle bd = new Bundle();
+			bd.putString("_id", String.valueOf(localId[0]));
+			bd.putString("name", localName[0]);
+			bd.putString("email", email[0]);
+			bd.putString("score", String.valueOf(localScore[0]));
+			bd.putString("hits", String.valueOf(localHits[0]));
+			bd.putString("level", String.valueOf(localLevel[0]));
+			
+			Intent it = new Intent(getBaseContext(), scoreUpdate.class);
+			it.putExtras(bd);
+			
+			it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY );
+			gameRank.this.startActivity(it);
 		}
 		
 		

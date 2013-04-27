@@ -75,10 +75,11 @@ public class register extends Activity {
 						cursor.moveToNext();
 					}
 					
-					Intent it = new Intent(getBaseContext(), gameRank.class);
-					it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					Intent it = new Intent();
+					it.setClass(register.this, gameRank.class);
+					it.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 					register.this.startActivity(it);
-					//register.this.finish();
+					register.this.finish();
 				}
 				else
 				{
