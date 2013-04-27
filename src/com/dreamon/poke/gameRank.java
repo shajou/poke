@@ -61,6 +61,7 @@ public class gameRank extends Activity {
 	String name[];
 	int score[];
 	int hits[];
+	String globalEmail[];
 	String level[];	
 	String isUpdateScore[];
 	String localIsUpdateScore[];
@@ -73,7 +74,7 @@ public class gameRank extends Activity {
 	int localHits[];
 	String localLevel[];
 	
-	
+	memberDataSql mds;
 	
 	//list view
 	ListView list1;
@@ -88,6 +89,7 @@ public class gameRank extends Activity {
 	Button registerBtn;
 	
 	TextView registerDesc;
+	TextView globalMyBestScore;
 	
 	int gb = 0;
 	int lb = 0;
@@ -129,7 +131,7 @@ public class gameRank extends Activity {
 		myList2 = new ArrayList<HashMap<String, String>>();
 		
 		//myList1.clear();
-		
+		globalMyBestScore = (TextView)findViewById(R.id.globalMyBestScore);
 		
 		//btn
 		localBtn = (Button)findViewById(R.id.localBtn);
@@ -168,6 +170,7 @@ public class gameRank extends Activity {
 		});
 		
 		
+		
 		//switchRank(2);
 		
 		//net
@@ -202,10 +205,11 @@ public class gameRank extends Activity {
 				list2.setVisibility(View.INVISIBLE);
 				
 				updLoclBestBtn.setVisibility(View.VISIBLE);
-				
+				globalMyBestScore.setVisibility(View.INVISIBLE);
 				break;
 			case 2:
 				updLoclBestBtn.setVisibility(View.INVISIBLE);
+				globalMyBestScore.setVisibility(View.VISIBLE);
 				//System.out.println(netBoo);
 				if(netBoo == false)
 				{
@@ -294,6 +298,7 @@ public class gameRank extends Activity {
 			score = new int[rows_num];
 			hits = new int[rows_num];
 			level = new String[rows_num];	
+			globalEmail = new String[rows_num];	
 			isUpdateScore = new String[rows_num];
 			
 			for(int n = 0; n < rows_num;n++)
@@ -307,6 +312,8 @@ public class gameRank extends Activity {
 					hits[n] = Integer.parseInt(String.valueOf(obj2.get("hits")));
 					level[n] = String.valueOf(obj2.get("level"));
 					isUpdateScore[n] = String.valueOf(obj2.get("isUpdateScore"));
+					globalEmail[n] = String.valueOf(obj2.get("email"));
+					
 				}
 			}
 			
@@ -329,6 +336,41 @@ public class gameRank extends Activity {
 									);
 			list2.setAdapter(sa);	
 		
+			//local member data
+			mds = new memberDataSql(gameRank.this);		
+			Cursor cursor = mds.getAll("");
+			int num = cursor.getCount();
+			String email[] = new String[num];
+			int mId[] = new int[num];
+			String localName[] = new String[num];
+			
+			//取使用者資料
+			if(num != 0) {
+				cursor.moveToFirst();			//將指標移至第一筆資料
+				for(int i=0; i<num; i++) {
+					mId[i] = cursor.getInt(0);	//取得第0欄的資料，根據欄位type使用適當語法
+					localName[i] = cursor.getString(1);
+					email[i] = cursor.getString(2);
+					cursor.moveToNext();		//將指標移至下一筆資料
+					//System.out.println(id[i] + " " + name[i] + " " + score[i] + " " + hits[i] + " " + level[i] );
+				}
+			}
+			cursor.close();
+			
+			//全球最佳排名
+			for(int n = 0; n < score.length;n++)
+			{
+				if(name[n].equals(localName[0]) && globalEmail[n].equals(email[0]))
+				{
+					globalMyBestScore.setText("排名 " + n + " " + score[n] + "\n" + name[n] + " | " +  hits[n] + " hits | " + level[n]);
+					break;
+				}
+				else
+				{
+					globalMyBestScore.setText("尚未上傳成績");
+				}
+				
+			}
 			
 		
 	}
