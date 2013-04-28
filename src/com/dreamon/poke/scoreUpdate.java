@@ -62,6 +62,7 @@ public class scoreUpdate extends Activity {
 	Button scoreUpdateBtn;
 	
 	TextView scoreDataText;
+	TextView updMsgTv;
 	
 	//net 
 	ConnectivityManager conManager;
@@ -89,6 +90,7 @@ public class scoreUpdate extends Activity {
 		sqlData.setUrl("http://poke.grtimed.com/download_rank.php");
 		
 		scoreUpdateBtn = (Button)findViewById(R.id.scoreUpdateBtn);
+		updMsgTv = (TextView)findViewById(R.id.updMsgTv);
 		scoreDataText = (TextView)findViewById(R.id.scoreDataText);
 		scoreDataText.setText(bd.getString("name") + "\n" +
 				bd.getString("score") + "\n" + 
@@ -153,14 +155,15 @@ public class scoreUpdate extends Activity {
 			urlLoad urlload = new urlLoad();
 			urlload.act = 1;
 			urlload.setUrl("http://poke.grtimed.com/upd_rank.php");
-			String keyAry[] = {"name", "email", "score", "hits", "level"};
-			String valueAry[] = {bd.getString("name"), bd.getString("email"), bd.getString("score"), bd.getString("hits"), bd.getString("level")};
+			String keyAry[] = {"name", "email", "score", "hits", "level", "msg"};
+			String valueAry[] = {bd.getString("name"), bd.getString("email"), bd.getString("score"), bd.getString("hits"), bd.getString("level"), String.valueOf(updMsgTv.getText())};
 			urlload.startThread(keyAry,valueAry);
 			
 			//isUpdateScore = 1;
 			NewListDataSQL nld = new NewListDataSQL(scoreUpdate.this);
 			nld.update(Long.valueOf(bd.getString("_id")), "isUpdatesScore" , "1");
 			
+			System.out.println("msg: " + String.valueOf(updMsgTv.getText()));
 			
 			Intent it = new Intent();
 			it.setClass(scoreUpdate.this, gameRank.class);

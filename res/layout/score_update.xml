@@ -30,6 +30,15 @@
         android:text="上傳成績"
         android:visibility="invisible" />
 
-    
+    <EditText
+        android:id="@+id/updMsgTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scoreUpdateBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:hint="留言 可輸入最多20個字符"
+        android:maxLength="20" />
 
 </RelativeLayout>

@@ -74,6 +74,7 @@ public class gamePlay extends Activity {
 	int tBaseTime = 1;
 	int tMaxTime = 10;
 	boolean threadPause = false;
+	Thread threadCountDown;
 	
 	Thread icdThread = null;
 	Thread itemThread = null;
@@ -139,7 +140,7 @@ public class gamePlay extends Activity {
 	int gameTimeHandler = 2;
 	private Thread gTimeThread = null;
 	int gTimeOut = 1000;
-	String gTime = "1";
+	String gTime = "60";
 	public static TextView gTimeText;
 	
 	//功能按鈕
@@ -217,6 +218,27 @@ public class gamePlay extends Activity {
 		registerBtn = (Button)findViewById(R.id.registerBtn);
 		registerDesc = (TextView)findViewById(R.id.registerDesc);
 		
+		//繼續
+		resumeBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				gameResume();
+			}
+		});
+		
+		//重新開始
+		
+		restartBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				gameRestart();
+			}
+		});
+
 		//佇列存放
 		//stStatu = new int[30];
 		
@@ -237,6 +259,7 @@ public class gamePlay extends Activity {
 	}
 	
 	public void gameInit() {
+		gameStatus = gamePlay;
 		
 		//取得螢幕寬高
 		dm = new DisplayMetrics();
@@ -559,26 +582,7 @@ public class gamePlay extends Activity {
 			}
 		});
 		
-		//繼續
-		resumeBtn.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				gameResume();
-			}
-		});
 		
-		//重新開始
-		
-		restartBtn.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				gameRestart();
-			}
-		});
 		
 		
 		
@@ -589,7 +593,7 @@ public class gamePlay extends Activity {
 	}
 	
 	private void threadGameCountDown() {
-		Thread threadCountDown = new Thread(){
+		threadCountDown = new Thread(){
 	    @Override
 	    public void run() {
 	    	while(countDown > 0 ) {
@@ -847,8 +851,17 @@ public class gamePlay extends Activity {
 			gPauselayout.setVisibility(View.VISIBLE);
 			gPauselayout.bringToFront();
 			
-			timer.cancel();
-			gTimeThread.interrupt();
+			System.out.println("game statu: "+ gameStatus);
+			
+			if(gameStatus == gamePlay)
+			{
+				
+				timer.cancel();
+				gTimeThread.interrupt();
+				
+			}
+			
+			threadCountDown.interrupt();
 			threadPause = true;
 			
 			for(int c =0 ; c < st.size();c++)
@@ -864,10 +877,19 @@ public class gamePlay extends Activity {
 	private void gameResume() {
 		if(gameStatus != 4)
 		{
-			comboTime();
-			threadGameTime();
-			threadPause = false;
+			System.out.println("game statu: "+ gameStatus);
+			if(gameStatus == gamePlay)
+			{
+				comboTime();
+				threadGameTime();
+				
+			}
+			else
+			{
+				
+			}
 			
+			threadPause = false;
 			gPauselayout.setVisibility(View.INVISIBLE);
 			
 			for(int c =0 ; c < st.size();c++)

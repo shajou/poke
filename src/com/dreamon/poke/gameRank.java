@@ -61,6 +61,7 @@ public class gameRank extends Activity {
 	String name[];
 	int score[];
 	int hits[];
+	String msg[];
 	String globalEmail[];
 	String level[];	
 	String isUpdateScore[];
@@ -298,6 +299,7 @@ public class gameRank extends Activity {
 			score = new int[rows_num];
 			hits = new int[rows_num];
 			level = new String[rows_num];	
+			msg = new String[rows_num];	
 			globalEmail = new String[rows_num];	
 			isUpdateScore = new String[rows_num];
 			
@@ -311,6 +313,7 @@ public class gameRank extends Activity {
 					name[n] = String.valueOf(obj2.get("name"));
 					hits[n] = Integer.parseInt(String.valueOf(obj2.get("hits")));
 					level[n] = String.valueOf(obj2.get("level"));
+					msg[n] = String.valueOf(obj2.get("msg"));
 					isUpdateScore[n] = String.valueOf(obj2.get("isUpdateScore"));
 					globalEmail[n] = String.valueOf(obj2.get("email"));
 					
@@ -324,15 +327,16 @@ public class gameRank extends Activity {
 				//put( list_view.xml => itemDesc, "tittle text");
 				//String[] code = codeArray[i].split("::");
 				map.put("itemScore", String.valueOf(score[i]));
-				map.put("itemDesc", String.valueOf("Name: " + name[i] + " Hits: " + hits[i] + " Level: " + level[i]) + " isUpdate: " + isUpdateScore[i]);
+				map.put("itemMsg", String.valueOf(msg[i]));
+				map.put("itemDesc", String.valueOf("Name: " + name[i] + " Hits: " + hits[i] + " Level: " + level[i]));
 				myList2.add(map);
 			}
 			
 			SimpleAdapter sa = new SimpleAdapter(gameRank.this, 
 					myList2, 
 									R.layout.rank_list, 
-									new String[]{"itemScore", "itemDesc"}, 
-									new int[] {R.id.itemScore, R.id.itemDesc} 
+									new String[]{"itemScore", "itemMsg", "itemDesc"}, 
+									new int[] {R.id.itemScore, R.id.itemMsg,R.id.itemDesc} 
 									);
 			list2.setAdapter(sa);	
 		
@@ -362,7 +366,7 @@ public class gameRank extends Activity {
 			{
 				if(name[n].equals(localName[0]) && globalEmail[n].equals(email[0]))
 				{
-					globalMyBestScore.setText("排名 " + n + " " + score[n] + "\n" + name[n] + " | " +  hits[n] + " hits | " + level[n]);
+					globalMyBestScore.setText("排名 " + (n+1) + " 分數 " + score[n] + "\n" + name[n] + " | " +  hits[n] + " hits | " + level[n] + "\n" + msg[n]);
 					break;
 				}
 				else
@@ -419,7 +423,7 @@ public class gameRank extends Activity {
 				//put( list_view.xml => itemDesc, "tittle text");
 				//String[] code = codeArray[i].split("::");
 				map.put("itemScore", String.valueOf(localScore[i]));
-				map.put("itemDesc", String.valueOf("Name: " + localName[i] + " Hits: " + localHits[i] + " Level: " + localLevel[i] + " isUpdateScore: " + localIsUpdateScore[i]));
+				map.put("itemDesc", String.valueOf("Name: " + localName[i] + " Hits: " + localHits[i] + " Level: " + localLevel[i]));
 				myList1.add(map);
 			}
 			
