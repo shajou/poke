@@ -52,6 +52,11 @@
             android:screenOrientation="portrait"
             >
             </activity>
+        <activity 
+            android:name="pokeSet"
+            android:screenOrientation="portrait"
+            >
+            </activity>
     </application>
 
 </manifest>

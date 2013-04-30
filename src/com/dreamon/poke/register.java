@@ -12,6 +12,8 @@ import org.apache.http.util.EntityUtils;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -34,10 +36,14 @@ public class register extends Activity {
 	
 	Long id;
 	
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
+		
+		ActionBar ab = getActionBar();
+		ab.hide();
 		
 		mds = new memberDataSql(register.this);
 		

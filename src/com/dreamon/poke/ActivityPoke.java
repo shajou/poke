@@ -12,6 +12,8 @@ import org.apache.http.util.EntityUtils;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -21,18 +23,23 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+@SuppressLint("NewApi")
 public class ActivityPoke extends Activity {
 
 	
 	Button startBtn;
 	Button rankBtn;
 	Button testBtn;
+	Button setBtn;
 	
 	@SuppressWarnings("null")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.poke_main);
+		
+		ActionBar ab = getActionBar();
+		ab.hide();
 		
 		/*
 		Intent it = new Intent();
@@ -42,6 +49,7 @@ public class ActivityPoke extends Activity {
 		
 		startBtn = (Button)findViewById(R.id.startBtn);
 		rankBtn = (Button)findViewById(R.id.rankBtn);
+		setBtn = (Button)findViewById(R.id.setBtn);
 		testBtn = (Button)findViewById(R.id.testBtn);
 		
 		startBtn.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +76,17 @@ public class ActivityPoke extends Activity {
 		});
 		
 		testBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent it = new Intent();
+				it.setClass(ActivityPoke.this, sqlTest.class);
+				ActivityPoke.this.startActivity(it);
+			}
+		});
+		
+		setBtn.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {

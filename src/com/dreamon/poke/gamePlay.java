@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -178,6 +179,9 @@ public class gamePlay extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_play);
+		
+		ActionBar ab = getActionBar();
+		ab.hide();
 		
 		//¹D¨ã
 		gameitem = new gameItem();
