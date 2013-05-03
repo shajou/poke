@@ -92,7 +92,7 @@ public class ActivityPoke extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent it = new Intent();
-				it.setClass(ActivityPoke.this, sqlTest.class);
+				it.setClass(ActivityPoke.this, pokeSet.class);
 				ActivityPoke.this.startActivity(it);
 			}
 		});
@@ -104,6 +104,16 @@ public class ActivityPoke extends Activity {
 		if(cursor.getCount() == 0)
 		{
 			mds.create("ghost", "ghost@email.com");
+		}
+		
+		//建立設定
+		setDataSql set = new setDataSql(ActivityPoke.this);
+		Cursor setCursor = set.getAll("");
+		System.out.println(setCursor);
+		if(setCursor.getCount() == 0)
+		{
+			//set.onCreate();
+			set.create(1);
 		}
 		//mds.create("ghost", "ghost@email.com");
 		

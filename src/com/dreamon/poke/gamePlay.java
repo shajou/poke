@@ -172,7 +172,8 @@ public class gamePlay extends Activity {
 	//音效播放
 	SoundPool sp;
 	int sound;
-	
+	setDataSql set;
+	int isSoundPlay;
 	
 	
 	@Override
@@ -192,7 +193,13 @@ public class gamePlay extends Activity {
 		//sp = new SoundPool();
 		sp = new SoundPool( 30, AudioManager.STREAM_MUSIC, 0);
 		sound = sp.load(this, R.raw.slap, 0);
-		
+		set = new setDataSql(gamePlay.this);
+		Cursor setCu = set.getAll("");
+		if(setCu.getCount() != 0)
+		{
+			setCu.moveToFirst();
+			isSoundPlay = setCu.getInt(1);
+		}
 		
 		//連技標語
 		itemComboDesc = (TextView)findViewById(R.id.itemComboDesc);
@@ -1176,7 +1183,11 @@ public class gamePlay extends Activity {
 	//音效
 	private void pokeSoundEffect() {
 		
-		sp.play(sound, 1, 1, 0, 0, 1);
+		if(isSoundPlay == 1)
+		{
+			sp.play(sound, 1, 1, 0, 0, 1);
+		}
+		
 		
 	}
 	

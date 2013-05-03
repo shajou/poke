@@ -22,11 +22,18 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class pokeSet extends Activity {
 
 	
-	Button startBtn;
+	//Button startBtn;
+	CheckBox gameSound;
+	setDataSql set;
+	int isSetSound;
+	Long setSoundLongId;
 	
 	@SuppressLint("NewApi")
 	@SuppressWarnings("null")
@@ -38,17 +45,51 @@ public class pokeSet extends Activity {
 		ActionBar ab = getActionBar();
 		ab.hide();
 		
-		startBtn = (Button)findViewById(R.id.startBtn);
+		gameSound = (CheckBox)findViewById(R.id.gameSound);
 		
-		startBtn.setOnClickListener(new View.OnClickListener() {
+		set = new setDataSql(pokeSet.this);
+		Cursor cu = set.getAll("");
+		
+		if(cu.getCount() != 0)
+		{
+			cu.moveToFirst();
+			setSoundLongId = cu.getLong(0);
+			isSetSound = cu.getInt(1);
 			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				//Intent it = new Intent();
-				//it.setClass(pokeSet.this, gamePlay.class);
-				//pokeSet.this.startActivity(it);
-			}
+			System.out.println("rowId " + cu.getLong(0) + " " + cu.getInt(1));
+		}
+		
+		
+		
+		if(isSetSound == 1)
+		{
+			gameSound.setChecked(true);
+		}
+		else
+		{
+			gameSound.setChecked(false);
+		}
+		
+		
+		
+		gameSound.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                 // TODO Auto-generated method stub
+				
+				System.out.println(buttonView.isChecked());
+				
+            	if (buttonView.isChecked()) {
+            		buttonView.setChecked(true);
+            		set.update(setSoundLongId, 1);
+            	}
+            	else
+            	{
+            		buttonView.setChecked(false);
+            		set.update(setSoundLongId, 0);
+            	}
+
+            }
 		});
 		
 		

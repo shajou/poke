@@ -11,8 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class memberDataSql extends SQLiteOpenHelper {
 
-	private static final int VERSION = 7;//資料庫版本  
-	private final static String name = "poke.db"; 
+	private static final int VERSION = 1;//資料庫版本  
+	private final static String name = "poke_member.db"; 
 	
 	private final static String _TableName = "poke_member";
 	

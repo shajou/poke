@@ -5,23 +5,24 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class NewListDataSQL extends SQLiteOpenHelper {
+public class setDataSql extends SQLiteOpenHelper {
 
-	private static final int VERSION = 1;//資料庫版本  
-	private final static String name = "poke_rank.db"; 
+	private static final int VERSION = 3;//資料庫版本  
+	private final static String name = "poke_set.db"; 
 	
-	private final static String _TableName = "poke_rank";
+	private final static String _TableName = "poke_setting";
 	
 	private SQLiteDatabase db;
 	
     //建構子
-	public NewListDataSQL(Context context) {
+	public setDataSql(Context context) {
 		super(context, name, null, VERSION);
 		db = this.getWritableDatabase();
+		//db.execSQL("DROP TABLE IF EXISTS poke_setting");
 	}
 	
 	/*
@@ -37,47 +38,43 @@ public class NewListDataSQL extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		 String DATABASE_CREATE_TABLE =
-			     "CREATE TABLE poke_rank ("
-			       + "_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			             + "name TEXT,"
-			             + "score INTEGER,"
-			             + "hits INTEGER,"
-			             + "level TEXT,"
-			             + "isUpdatesScore TEXT"
+			     "CREATE TABLE if not exists poke_setting  ("
+			       + "_ID INTEGER PRIMARY KEY  AUTOINCREMENT,"
+			             + "isChecked INTEGER"
 			         + ")";
 		 db.execSQL(DATABASE_CREATE_TABLE);
-		 
+
 		 System.out.println("onCreate");
 	}
 	
 	// 取得所有記錄
 	public Cursor getAll(String order) {
+		Cursor c;
 		if(order == null)
 		{
 			order = "";
 		}
 		
-		Cursor cursor;
-		
 		try{
-			cursor = db.rawQuery("SELECT * FROM poke_rank " + order , null);
-			return cursor;
+			c = db.rawQuery("SELECT * FROM poke_setting " + order , null);
+			return c;
 		}
 		catch (SQLiteException e)
 		{
-			onCreate(db);
-			cursor = null;
-			return cursor;
+			c = null;
+			return c;
 		}
+		//System.out.println(db.rawQuery("SELECT * FROM poke_member " + order , null));
 		
-	    
+		//System.out.println("getCount: " + c.getCount());
+	   // return db.rawQuery("SELECT * FROM poke_member " + order , null);
 	}
 	
 	// 取得一筆紀錄
 	public Cursor get(long rowId) throws SQLException {
 		Cursor cursor = db.query(true,
-		"poke_rank",				//資料表名稱
-		new String[] {"_ID", "name", "score", "hits", "level", "isUpdatesScore"},	//欄位名稱
+		"poke_setting",				//資料表名稱
+		new String[] {"_ID", "isChecked"},	//欄位名稱
 		"_ID=" + rowId,				//WHERE
 		null, // WHERE 的參數
 		null, // GROUP BY
@@ -94,65 +91,77 @@ public class NewListDataSQL extends SQLiteOpenHelper {
 	}
 	
 	//新增一筆記錄，成功回傳rowID，失敗回傳-1
-	public long create(String name, int score, int hits, String level, String isUpdatesScore) {
+	public long create(int isChecked) {
 		ContentValues args = new ContentValues();
-		args.put("name", name);
-		args.put("score", score);
-		args.put("hits", hits);
-		args.put("level", level);
-		args.put("isUpdatesScore", isUpdatesScore);
-		
-		try{
-			//cursor = db.rawQuery("SELECT * FROM poke_rank " + order , null);
-			return db.insert("poke_rank", null, args);
-		}
-		catch (SQLiteException e)
-		{
-			onCreate(db);
-			db.insert("poke_rank", null, args);
-			
-			return db.insert("poke_rank", null, args);
-		}
-		
-		
+		args.put("isChecked", isChecked);
+ 
+		return db.insert("poke_setting", null, args);
     }
 	
 	//刪除記錄，回傳成功刪除筆數
 	public int delete(long rowId) {
-		return db.delete("poke_rank",	//資料表名稱
+		return db.delete("poke_setting",	//資料表名稱
 		"_ID=" + rowId,			//WHERE
 		null				//WHERE的參數
 		);
 	}
 	
 	public int deleteAll() {
-		return db.delete("poke_rank",	//資料表名稱
+		return db.delete("poke_setting",	//資料表名稱
 		null,			//WHERE
 		null				//WHERE的參數
 		);
 	}
 	
 	//修改記錄，回傳成功修改筆數
-	public int update(long rowId, String key, String value) {
+	public int update(long rowId, int isChecked) {
 		ContentValues args = new ContentValues();
-		args.put(key, value);
+		args.put("isChecked", isChecked);
  
-		return db.update("poke_rank",	//資料表名稱
+		return db.update("poke_setting",	//資料表名稱
 		args,				//VALUE
 		"_ID=" + rowId,			//WHERE
 		null				//WHERE的參數
 		);
 	}
+	
+	public void deleteTable() {
+		db.execSQL("DROP TABLE IF EXISTS poke_setting");
+	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Auto-generated method stub
-		db.execSQL("DROP TABLE IF EXISTS poke_rank");
-		onCreate(db);
-	}
-	
-	public void deleteTable() {
-		db.execSQL("DROP TABLE IF EXISTS poke_rank");
+		
+		System.out.println("onUpgrade");
+		
+		if (newVersion > oldVersion) {
+		   db.beginTransaction();//建立交易
+		     
+		    boolean success = false;//判斷參數
+		        
+		    //由之前不用的版本，可做不同的動作     
+		    switch (oldVersion) {
+		    case 1:           
+		     // db.execSQL("ALTER TABLE poke_setting ADD COLUMN reminder integer DEFAULT 0");
+		     // db.execSQL("ALTER TABLE poke_setting ADD COLUMN type VARCHAR");
+		     // db.execSQL("ALTER TABLE poke_setting ADD COLUMN memo VARCHAR");
+		     // oldVersion++;
+		             
+		     success = true;
+		     break;
+		    }
+		                
+		     if (success) {
+		       db.setTransactionSuccessful();//正確交易才成功
+		      }
+		    db.endTransaction();
+		  }
+		  else {
+		    onCreate(db);
+		  }  
+		//db.execSQL("DROP TABLE IF EXISTS poke_setting");
+		//onCreate(db);
 	}
 	
 	@Override   
