@@ -25,6 +25,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:layout_below="@+id/imageView1"
+        android:visibility="invisible"
         android:background="@drawable/start"
         
         />
@@ -36,6 +37,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/startBtn"
         android:layout_marginTop="40dp"
+        android:visibility="invisible"
         android:background="@drawable/rank"
          />
     
@@ -46,6 +48,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/rankBtn"
         android:layout_marginTop="40dp"
+        android:visibility="invisible"
         android:background="@drawable/option" 
         />
     

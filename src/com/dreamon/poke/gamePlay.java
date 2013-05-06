@@ -172,7 +172,8 @@ public class gamePlay extends Activity {
 	TextView itemMsg;
 	gameItem gameitem;
 	int itemScorePlus = 1;
-	int itemRandom = 15;
+	int itemRandom = 12; //default 15
+	int stCount = 0;
 	
 	//音效播放
 	SoundPool sp;
@@ -499,7 +500,22 @@ public class gamePlay extends Activity {
 							case 2:
 								itemMsgBox( "Extra  X 2 !!" );
 								itemScoreDouble();
+								break;
+							case 3:
+								//減少分數
+								//v.setId(2);
 								
+								score.setText( 
+										String.valueOf(
+											Integer.parseInt(
+												String.valueOf(
+														score.getText()
+														)
+													) - s
+											)
+										);
+								itemMsgBox( "BOMB!!!" );
+								//itemScoreDouble();
 							default:
 								break;
 						}
@@ -509,7 +525,7 @@ public class gamePlay extends Activity {
 						if( 0 + (int)(Math.random() * itemRandom) < 1)
 						{
 							
-							stStatu[i] = 1 + (int)(Math.random() * 2);
+							stStatu[i] = 1 + (int)(Math.random() * 3);
 							//stStatu[i] = 2;
 						}
 						else
@@ -751,6 +767,8 @@ public class gamePlay extends Activity {
 						if( v.getId() > 0)
 						{
 							v.setId( v.getId() - 1);
+							
+							
 						}
 						else
 						{
@@ -761,6 +779,11 @@ public class gamePlay extends Activity {
 									break;
 								case 2:
 									v.setBackgroundResource(R.drawable.item_double);
+									break;
+								case 3:
+									v.setBackgroundResource(R.drawable.item_bomb);
+									
+									//stStatu[c] = 0;
 									break;
 								default:
 									v.setBackgroundResource(R.drawable.poke);
@@ -900,6 +923,42 @@ public class gamePlay extends Activity {
 		{
 			gt = gt - 1;
 			gTimeText.setText( String.valueOf(gt) );
+			
+			
+			System.out.println("c: " + st.size());
+			
+			
+			for(int c =0 ; c < st.size() ;c++)
+			{
+				View v = (View)st.get(c);
+								
+				//如果有狀態是BOMB的 就設回0
+				System.out.println("stStatu[c]: " + stStatu[c]);
+				if(stStatu[c] == 3 )
+				{
+					
+					//大於三就
+					if(stCount == 6)
+					{						
+						v.setId(0);
+						v.setBackgroundResource(R.drawable.poke);
+						stStatu[c] = 0;
+						//stCount = 0;
+						
+					}
+					
+				}
+					
+				
+			}
+			stCount++;
+			
+			System.out.println("stCount: " + stCount);
+			if(stCount > 6)
+			{
+				stCount = 0;
+			}
+			
 			threadGameTime();
 		}
 		else
@@ -1181,8 +1240,19 @@ public class gamePlay extends Activity {
 	//訊息
 	private void itemMsgBox(String str) {
 		
+		
+		
 		imaSet = new AnimationSet(false);
-		imScaleAnime = new ScaleAnimation(sfX, stX, sfY, stY);
+		//暫時先這樣判斷
+		if(str.equals("BOMB!!!"))
+		{
+			imScaleAnime = new ScaleAnimation(1, 3, 1, 3, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		}
+		else
+		{
+			imScaleAnime = new ScaleAnimation(sfX, stX, sfY, stY, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		}
+		
 		imAlphaAnime = new AlphaAnimation(1,0);
 		
 		imaSet.addAnimation(imScaleAnime);

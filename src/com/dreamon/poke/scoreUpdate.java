@@ -96,9 +96,9 @@ public class scoreUpdate extends Activity {
 		scoreUpdateBtn = (Button)findViewById(R.id.scoreUpdateBtn);
 		updMsgTv = (TextView)findViewById(R.id.updMsgTv);
 		scoreDataText = (TextView)findViewById(R.id.scoreDataText);
-		scoreDataText.setText(bd.getString("name") + "\n" +
-				bd.getString("score") + "\n" + 
-				bd.getString("hits") + " hits" + "\n" + 
+		scoreDataText.setText(bd.getString("name") + "\n\n" +
+				bd.getString("score") + "\n\n" + 
+				bd.getString("hits") + " hits" + "\n\n" + 
 				bd.getString("level")
 				);
 				

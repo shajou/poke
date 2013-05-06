@@ -51,6 +51,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 @SuppressWarnings("rawtypes")
 @SuppressLint("NewApi")
@@ -535,6 +536,10 @@ public class gameRank extends Activity {
 			
 			it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY );
 			gameRank.this.startActivity(it);
+		}
+		else
+		{
+			Toast.makeText(getBaseContext(), "最佳分數已上傳過了 <:3", Toast.LENGTH_LONG).show();
 		}
 		
 		

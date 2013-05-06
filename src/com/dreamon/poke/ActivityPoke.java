@@ -25,9 +25,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
@@ -43,6 +47,10 @@ public class ActivityPoke extends Activity {
 	AdView adView;
 	Thread thread;
 	
+	int gameAniStatu = 0;
+	DisplayMetrics dm;
+	int vW = 0;
+	
 	@SuppressWarnings("null")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +59,11 @@ public class ActivityPoke extends Activity {
 		
 		ActionBar ab = getActionBar();
 		ab.hide();
+		
+		dm = new DisplayMetrics();
+		this.getWindowManager().getDefaultDisplay().getMetrics(dm);
+		vW = dm.widthPixels;
+		//vH = dm.heightPixels - 40;
 		
 		/*
 		Intent it = new Intent();
@@ -129,9 +142,8 @@ public class ActivityPoke extends Activity {
 		//mds.create("ghost", "ghost@email.com");
 		
 		
-		
-	//	nld.onCreate(db);
-		
+		//animation
+		gameAnimation();
 		
 		//Ads
 		//IMAdView imAdView = (IMAdView) findViewById(R.id.imAdview);
@@ -166,6 +178,27 @@ public class ActivityPoke extends Activity {
 		};
 		thread.start();
 	}
+	
+	private void gameAnimation() {
+		Thread gameAnimate = new Thread(){
+	    @Override
+	    public void run() {
+	        // TODO Auto-generated method stub 
+	    	try {	    	   
+		    		Thread.sleep(500);
+					Message msg = new Message();
+					msg.what = 2;
+					uiMessageHandler.sendMessage(msg);
+				}
+			catch(Exception e){
+				}
+			finally {
+				}
+	    			        
+	    	}    
+		};
+		gameAnimate.start();
+	}
 
 	private Handler uiMessageHandler = new Handler()
 	{
@@ -181,9 +214,47 @@ public class ActivityPoke extends Activity {
 					
 					threadResetBtn();
 					break;
+				case 2:
+					float x2 = (vW / 2);
+					Animation am = new TranslateAnimation( vW, 0 , 0, 0);
+					//AlphaAnimation alpha = new AlphaAnimation(0, 1);
+					am.setDuration(1000);
+					
+					
+					switch(gameAniStatu)
+					{
+						case 0:
+							//gameOverScore.setAnimation(alpha);
+							startBtn.setVisibility(View.VISIBLE);
+							startBtn.setAnimation(am);
+							am.startNow();
+							gameAnimation();
+							break;
+						case 1:
+							rankBtn.setVisibility(View.VISIBLE);
+							rankBtn.setAnimation(am);
+							am.startNow();
+							gameAnimation();
+							break;
+						case 2:
+							setBtn.setVisibility(View.VISIBLE);
+							setBtn.setAnimation(am);
+							am.startNow();
+							gameAniStatu = 0;
+							break;
+						
+						default:
+							
+							break;
+					}
+					
+					gameAniStatu++;
+					
+					break;
 			}
 		}
 	};
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

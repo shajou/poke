@@ -14,11 +14,14 @@
         
         <Button 
             android:id="@+id/localBtn"
-            android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
+            android:layout_width="80dp"
+        	android:layout_height="39dp"
+        	android:layout_margin="10dp"
         	android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:text="本機"
+            
+            android:background="@drawable/local"
+            android:text=""
             />
         
         <TextView 
@@ -28,17 +31,20 @@
         	android:layout_alignParentTop="true"
         	android:layout_centerHorizontal="true"
         	android:textColor="#ffffff"
+        	android:layout_margin="10dp"
         	android:text="排名"
-        	android:textSize="24sp"
+        	android:textSize="28sp"
             />
 
         <Button
             android:id="@+id/globalBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+        	android:layout_height="39dp"
+        	android:layout_margin="10dp"
+            android:background="@drawable/global"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="全球" />
+            />
         
     </RelativeLayout>
     
@@ -47,7 +53,7 @@
         android:layout_below="@+id/switchLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp" >
+        android:layout_marginBottom="105dp" >
         
         <ListView
 	        android:id="@+id/listView1"
@@ -72,14 +78,16 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/lvLayout"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="55dp"
          >
 
         <Button
             android:id="@+id/updLoclBestBtn"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="上傳本機最好成績" />
+            android:layout_width="245dp"
+            android:layout_height="28dp"
+            android:background="@drawable/update"
+            android:layout_centerHorizontal="true"
+            android:text="" />
         
         <TextView
             android:id="@+id/globalMyBestScore"
@@ -141,7 +149,8 @@
         android:id="@+id/adsLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true" 
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="0dp"
         >
     </RelativeLayout>

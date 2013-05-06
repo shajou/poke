@@ -10,41 +10,96 @@
     tools:context=".ActivityPoke" >
 	
     <TextView
-        android:id="@+id/scoreDataText"
-        android:layout_width="wrap_content"
+        android:id="@+id/desc0"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="10dp"
+        android:textSize="34sp"
+        android:gravity="left"
+        android:text="UPLOAD SCORE"
+        android:shadowColor="#ffffff"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="8"
+        android:textColor="#ffffff" 
+        android:textAlignment="center" />
+    
+    <TextView
+        android:id="@+id/desc1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/desc0"
+        android:layout_marginTop="30dp"
         android:textSize="26sp"
-        android:gravity="center"
+        android:gravity="left"
+        android:text="Name\n\nScore\n\nCombo\n\nLevel"
+        android:shadowColor="#ffffff"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="8"
+        android:textColor="#ffffff" 
+        android:textAlignment="center" />
+    
+    <TextView
+        android:id="@+id/scoreDataText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/desc0"
+        android:textSize="26sp"
+        android:gravity="right"
         android:text="0\n124"
         android:shadowColor="#ffffff"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="8"
-        android:textColor="#ffe775" 
+        android:textColor="#ffffff" 
         android:textAlignment="center" />
     
     <Button
         android:id="@+id/scoreUpdateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="280dp"
+        android:layout_height="32dp"
+        android:background="@drawable/update"
         android:layout_below="@+id/scoreDataText"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="79dp"
-        android:text="上傳成績"
+        android:text=""
         android:visibility="invisible" />
 
     <EditText
         android:id="@+id/updMsgTv"
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/scoreUpdateBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="17dp"
+        android:textColor="#ffffff" 
+        
         android:ems="10"
-        android:hint="留言 可輸入最多20個字符"
+        android:hint="此處留言 可輸入最多20個字符"
+        android:textColorHint="#FFFFFFFF"
         android:maxLength="20" />
+    
+    <TextView
+        android:id="@+id/desc2"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/updMsgTv"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:text="上傳後須重開Rank以取得最新排名資料"
+        android:shadowColor="#ffffff"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="8"
+        android:textColor="#ffffff" 
+        android:textAlignment="center" />
 
 </RelativeLayout>

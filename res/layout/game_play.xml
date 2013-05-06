@@ -37,8 +37,8 @@
         <Button
             android:id="@+id/pauseBtn"
             android:layout_margin="10dp"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:background="@drawable/pause"
             android:layout_alignParentRight="true" />
 
@@ -174,21 +174,21 @@
         >
         <Button
 	        android:id="@+id/resumeBtn"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="回到遊戲"
+	        android:layout_width="192dp"
+	        android:layout_height="32dp"
 	        android:layout_centerHorizontal="true"
        		android:layout_marginTop="100dp"
+       		android:background="@drawable/resume"
          />
          
          <Button
           android:id="@+id/restartBtn"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+          android:layout_width="192dp"
+          android:layout_height="32dp"
           android:layout_centerHorizontal="true"
           android:layout_below="@+id/resumeBtn"
-          android:layout_marginTop="30dp"
-          android:text="重新開始" />
+          android:background="@drawable/home2"
+          android:layout_marginTop="30dp" />
          
          
         
