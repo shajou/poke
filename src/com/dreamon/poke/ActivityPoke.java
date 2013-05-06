@@ -9,6 +9,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
+import com.inmobi.androidsdk.IMAdView;
+import com.inmobi.commons.IMCommonUtil;
+import com.inmobi.commons.IMCommonUtil.LOG_LEVEL;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +29,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 @SuppressLint("NewApi")
 public class ActivityPoke extends Activity {
@@ -31,6 +39,9 @@ public class ActivityPoke extends Activity {
 	Button rankBtn;
 	Button testBtn;
 	Button setBtn;
+	
+	AdView adView;
+	Thread thread;
 	
 	@SuppressWarnings("null")
 	@Override
@@ -122,13 +133,71 @@ public class ActivityPoke extends Activity {
 	//	nld.onCreate(db);
 		
 		
+		//Ads
+		//IMAdView imAdView = (IMAdView) findViewById(R.id.imAdview);
+		//IMCommonUtil.setLogLevel(LOG_LEVEL.DEBUG);
+		//imAdView.setRefreshInterval(IMAdView.REFRESH_INTERVAL_OFF);
+		adView = new AdView(this, AdSize.BANNER, "a15147df506928f");
+		RelativeLayout ads = (RelativeLayout)findViewById(R.id.adsLayout);
+		ads.addView(adView);
+		threadResetBtn();
+		adView.loadAd(new AdRequest());
 	}
+	
+	private void threadResetBtn() {
+		thread = new Thread(){
+	    @Override
+	    public void run() {
+	        // TODO Auto-generated method stub           
+	    	
+	    	try {
+		    		Thread.sleep(15000);
+	    			Message msg = new Message();
+					msg.what = 1;
+					uiMessageHandler.sendMessage(msg);
+				}
+			catch(Exception e){
+				}
+			finally {
+				}
+		        
+	    	}    
+	    	
+		};
+		thread.start();
+	}
+
+	private Handler uiMessageHandler = new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg)
+		{
+			switch(msg.what)
+			{
+				case 1:
+					System.out.println("new request");
+					//adView.destroy();
+					adView.loadAd(new AdRequest());
+					
+					threadResetBtn();
+					break;
+			}
+		}
+	};
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_poke, menu);
 		return true;
+	}
+	
+	@Override
+	public void onDestroy() {
+		if (adView != null) {
+			adView.destroy();
+		}
+		super.onDestroy();
 	}
 
 }

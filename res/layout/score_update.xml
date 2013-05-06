@@ -6,6 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/bg"
     tools:context=".ActivityPoke" >
 	
     <TextView
@@ -15,10 +16,15 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="52dp"
+        android:textSize="26sp"
         android:gravity="center"
         android:text="0\n124"
-        android:textAlignment="center"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:shadowColor="#ffffff"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="8"
+        android:textColor="#ffe775" 
+        android:textAlignment="center" />
     
     <Button
         android:id="@+id/scoreUpdateBtn"

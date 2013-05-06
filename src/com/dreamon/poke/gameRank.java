@@ -16,6 +16,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
+
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -89,6 +93,7 @@ public class gameRank extends Activity {
 	Button localBtn;
 	Button updLoclBestBtn;
 	Button registerBtn;
+	Button closeBtn;
 	
 	TextView registerDesc;
 	TextView globalMyBestScore;
@@ -103,6 +108,9 @@ public class gameRank extends Activity {
 	
 	//layout
 	RelativeLayout regLayout;
+	
+	Thread thread;
+	AdView adView;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -130,6 +138,7 @@ public class gameRank extends Activity {
 		registerBtn = (Button)findViewById(R.id.registerBtn);
 		registerDesc = (TextView)findViewById(R.id.registerDesc);
 		regLayout = (RelativeLayout)findViewById(R.id.regLayout);
+		closeBtn = (Button)findViewById(R.id.closeBtn);
 		
 		//ListView for SlidingDrawer
 		myList1 = new ArrayList<HashMap<String, String>>();
@@ -192,6 +201,13 @@ public class gameRank extends Activity {
 		
 		//開啟本機記錄
 		switchRank(1);
+		
+		//ads
+		adView = new AdView(this, AdSize.BANNER, "a15147df506928f");
+		RelativeLayout ads = (RelativeLayout)findViewById(R.id.adsLayout);
+		ads.addView(adView);
+		threadResetBtn();
+		adView.loadAd(new AdRequest());
 		
 	}
 	
@@ -273,6 +289,15 @@ public class gameRank extends Activity {
 							it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY );
 							it.setClass(gameRank.this, register.class);
 							gameRank.this.startActivity(it);
+						}
+					});
+					
+					closeBtn.setOnClickListener(new View.OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							regLayout.setVisibility(View.INVISIBLE);
 						}
 					});
 				}
@@ -514,5 +539,46 @@ public class gameRank extends Activity {
 		
 		
 	}
+	
+	private void threadResetBtn() {
+		thread = new Thread(){
+	    @Override
+	    public void run() {
+	        // TODO Auto-generated method stub           
+	    	
+	    	try {
+		    		Thread.sleep(15000);
+	    			Message msg = new Message();
+					msg.what = 1;
+					uiMessageHandler.sendMessage(msg);
+				}
+			catch(Exception e){
+				}
+			finally {
+				}
+		        
+	    	}    
+	    	
+		};
+		thread.start();
+	}
+
+	private Handler uiMessageHandler = new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg)
+		{
+			switch(msg.what)
+			{
+				case 1:
+					System.out.println("new request");
+					//adView.destroy();
+					adView.loadAd(new AdRequest());
+					
+					threadResetBtn();
+					break;
+			}
+		}
+	};
 
 }

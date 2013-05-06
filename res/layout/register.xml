@@ -6,16 +6,29 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/bg"
     tools:context=".ActivityPoke" >
+    
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="21dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:text="註冊" />
 
     <EditText
         android:id="@+id/nameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/desc"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:hint="name"
+        android:hint="name 可輸入10個全形字"
+        android:textColor="#ffffff"
         android:ems="10" >
 
         <requestFocus />
@@ -29,17 +42,19 @@
         android:layout_marginTop="21dp"
         android:layout_centerHorizontal="true"
         android:hint="email"
+        android:textColor="#ffffff"
         android:ems="10"
         android:inputType="textEmailAddress" />
 
     <Button
         android:id="@+id/registerBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="231dp"
+        android:layout_height="38dp"
         android:layout_below="@+id/emailText"
         android:layout_marginTop="21dp"
         android:layout_centerHorizontal="true"
-        android:text="register" />
+        android:background="@drawable/register"
+        />
     
     <TextView
         android:id="@+id/responseText"
@@ -48,6 +63,17 @@
         android:layout_below="@+id/registerBtn"
         android:layout_marginTop="21dp"
         android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:text="註冊完畢後即可上傳成績！" />
+    
+    <TextView
+        android:id="@+id/alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/responseText"
+        android:layout_marginTop="21dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
         android:text="" />
 
 </RelativeLayout>

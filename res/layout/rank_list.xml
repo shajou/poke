@@ -14,6 +14,7 @@
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:textSize="21sp"
+    	android:textColor="#ffffff"
         />
     
     <TextView 
@@ -21,12 +22,14 @@
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:textSize="15sp"
+    	android:textColor="#ffffff"
         />
     
     <TextView 
         android:id="@+id/itemDesc"
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
+    	android:textColor="#ffffff"
         />
     
     

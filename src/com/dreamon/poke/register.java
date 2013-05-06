@@ -30,6 +30,7 @@ public class register extends Activity {
 	TextView nameText;
 	TextView emailText;
 	TextView responseText;
+	TextView alert;
 	
 	memberDataSql mds;
 	NewListDataSQL nld;
@@ -61,6 +62,7 @@ public class register extends Activity {
 		nameText = (TextView)findViewById(R.id.nameText);
 		emailText = (TextView)findViewById(R.id.emailText);
 		responseText = (TextView)findViewById(R.id.responseText);
+		alert = (TextView)findViewById(R.id.alert);
 		
 		registerBtn.setOnClickListener(new View.OnClickListener() {
 			
@@ -68,29 +70,41 @@ public class register extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				
-				if( mds.update(id, String.valueOf(nameText.getText()), String.valueOf(emailText.getText())) != -1 )
+				if(
+						( !String.valueOf(nameText.getText()).isEmpty() && 
+						!String.valueOf(emailText.getText()).isEmpty() ) 
+				)
 				{
-					//replace name
-					nld = new NewListDataSQL(register.this);
-					Cursor cursor = nld.getAll("");
-					cursor.moveToFirst();
-					for(int j = 0; j < cursor.getCount(); j++)
+					if( mds.update(id, String.valueOf(nameText.getText()), String.valueOf(emailText.getText())) != -1 )
 					{
-						nld.update(cursor.getLong(0), "name", String.valueOf(nameText.getText()) );
-						//nld.update(cursor.getLong(0), "email", String.valueOf(emailText.getText()) );
-						cursor.moveToNext();
+						//replace name
+						nld = new NewListDataSQL(register.this);
+						Cursor cursor = nld.getAll("");
+						cursor.moveToFirst();
+						for(int j = 0; j < cursor.getCount(); j++)
+						{
+							nld.update(cursor.getLong(0), "name", String.valueOf(nameText.getText()) );
+							//nld.update(cursor.getLong(0), "email", String.valueOf(emailText.getText()) );
+							cursor.moveToNext();
+						}
+						
+						Intent it = new Intent();
+						it.setClass(register.this, gameRank.class);
+						it.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+						register.this.startActivity(it);
+						register.this.finish();
 					}
-					
-					Intent it = new Intent();
-					it.setClass(register.this, gameRank.class);
-					it.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-					register.this.startActivity(it);
-					register.this.finish();
+					else
+					{
+						responseText.setText("註冊失敗，請重新再試一次");
+					}
 				}
 				else
 				{
-					responseText.setText("註冊失敗，請重新再試一次");
+					alert.setText("請確實輸入name及E-mail");
 				}
+				
+				
 				
 				
 				/*

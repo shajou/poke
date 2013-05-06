@@ -3,7 +3,7 @@
     android:id="@+id/gamePlayLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/poke_bg"
+    android:background="@drawable/bg"
     tools:context=".ActivityPoke" >
 	
     <RelativeLayout 
@@ -17,9 +17,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="60"
-            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
             android:textSize="21sp"
+            android:textColor="#ffffff"
             />
         
         <TextView
@@ -30,7 +31,16 @@
             android:layout_alignParentLeft="true"
             android:layout_margin="10dp"
             android:textSize="21sp"
+            android:textColor="#ffffff"
             />
+        
+        <Button
+            android:id="@+id/pauseBtn"
+            android:layout_margin="10dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/pause"
+            android:layout_alignParentRight="true" />
 
         <TextView
             android:id="@+id/combo"
@@ -104,7 +114,7 @@
     
     <RelativeLayout 
         android:id="@+id/gamePlayLayout"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="34dp"
     	android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
         >
@@ -121,9 +131,11 @@
             android:shadowDy="0"
             android:shadowRadius="5"
             android:text="3"
-            android:textColor="#ff0000"
+            android:textColor="#ffffff"
             android:textSize="300sp"
             android:visibility="invisible" />
+        
+        
         
     </RelativeLayout>
     
@@ -134,12 +146,21 @@
     	android:layout_height="wrap_content"
         >
         
-
-        <Button
-            android:id="@+id/pauseBtn"
+		<TextView
+            android:id="@+id/gameHighScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="pause" />
+            android:layout_alignParentLeft="true"
+            
+            android:layout_marginLeft="10dp"
+            android:shadowColor="#333"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="0"
+            android:textColor="#ffffff"
+            android:textSize="22sp" />
+        
         
     </RelativeLayout>
     
@@ -190,7 +211,7 @@
 	            android:layout_centerHorizontal="true"
 	            android:layout_marginTop="30dp"
 	            android:gravity="center|center_horizontal"
-	            android:text="遊戲結束"
+	            android:text="GAME OVER"
 	            android:textSize="30sp"
 	            android:textColor="#ffffff" />
         
@@ -200,11 +221,18 @@
 	            android:layout_height="wrap_content"
 	            android:layout_below="@+id/gameOverTitle"
 	            android:layout_centerHorizontal="true"
-	            android:layout_marginTop="30dp"
+	            android:layout_marginTop="36dp"
 	            android:gravity="center|center_horizontal"
 	            android:text="0"
-	            android:textSize="30sp"
-	            android:textColor="#ffffff" />
+	            android:textSize="56sp"
+	            android:textColor="#ffffff" 
+	            android:visibility="invisible"
+	            
+	            android:shadowColor="#e0e0e0"
+	            android:shadowDx="0"
+	            android:shadowDy="0"
+	            android:shadowRadius="8"
+	            />
 	        
 	        <TextView
 	            android:id="@+id/gameOverCombo"
@@ -212,11 +240,18 @@
 	            android:layout_height="wrap_content"
 	            android:layout_below="@+id/gameOverScore"
 	            android:layout_centerHorizontal="true"
-	            android:layout_marginTop="30dp"
+	            android:layout_marginTop="36dp"
 	            android:gravity="center|center_horizontal"
 	            android:text="0"
-	            android:textSize="30sp"
-	            android:textColor="#ffffff" />
+	            android:textSize="36sp"
+	            android:textColor="#ffffff" 
+	            android:visibility="invisible"
+	            
+	            android:shadowColor="#e0e0e0"
+	            android:shadowDx="0"
+	            android:shadowDy="0"
+	            android:shadowRadius="8"
+	            />
 	        
 	        <TextView
 	            android:id="@+id/level"
@@ -229,23 +264,41 @@
 	            android:shadowColor="#ffffff"
 	            android:shadowDx="0"
 	            android:shadowDy="0"
-	            android:shadowRadius="5"
+	            android:shadowRadius="8"
 	            android:text="0"
-	            android:textColor="#C76C28"
-	            android:textSize="30sp"
-	            android:color="#ffffff" />
+	            android:textSize="64sp"
+	            android:textColor="#ffe775" 
+	            android:visibility="invisible"
+	            />
 	        
-	        
+	        <TextView
+	            android:id="@+id/newRecored"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@+id/level"
+	            android:layout_centerHorizontal="true"
+	            android:layout_marginTop="30dp"
+	            android:gravity="center|center_horizontal"
+	            android:shadowColor="#ffffff"
+	            android:shadowDx="0"
+	            android:shadowDy="0"
+	            android:shadowRadius="8"
+	            android:text="NEW RECORD!!"
+	            android:textColor="#ffe775"
+	            android:textSize="32sp"
+	            android:textStyle="italic"
+	            android:visibility="invisible" />
 	        
 	        <Button
 	          android:id="@+id/overHomeBtn"
-	          android:layout_width="wrap_content"
-	          android:layout_height="wrap_content"
+	          android:layout_width="200dp"
+	          android:layout_height="43dp"
 	          android:layout_centerHorizontal="true"
-	          android:layout_below="@+id/level"
+	          android:layout_below="@+id/newRecored"
+	          android:background="@drawable/home"
+	          android:gravity="center"
 	          android:layout_marginTop="30dp"
-	          
-	          android:text="回主畫面" />
+	          android:visibility="invisible" />
 	        
 	        <Button
 	          android:id="@+id/updateBtn"
@@ -265,7 +318,8 @@
 	          android:layout_below="@+id/homeBtn"
 	          android:layout_marginTop="30dp"
 	          android:visibility="invisible"
-	          android:text="註冊" />
+	          android:background="@drawable/register"
+	          />
 	        
 	        <TextView
 	            android:id="@+id/registerDesc"

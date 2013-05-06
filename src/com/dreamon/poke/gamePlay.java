@@ -64,6 +64,8 @@ public class gamePlay extends Activity {
 	RelativeLayout gsl;
 	RelativeLayout gPauselayout;
 	RelativeLayout gOverlayout;
+	TextView gameHighScore;
+	int highScore = 0;
 	
 	//遊戲倒數
 	TextView gameCountDown;
@@ -132,6 +134,7 @@ public class gamePlay extends Activity {
 	Button pauseBtn;
 	Button resumeBtn;
 	
+	
 	//佇列存放
 	ArrayList<View> st = new ArrayList<View>();
 	int stStatu[] = new int[30];;
@@ -156,9 +159,11 @@ public class gamePlay extends Activity {
 	TextView gameOverScore;
 	TextView gameOverCombo;
 	TextView level;
+	TextView newRecored;
 	public static Button updateBtn;
 	Button registerBtn; 
 	TextView registerDesc;
+	int gameOverAniStatu = 0;
 	
 	int isUpdateScore = 0;
 	long insertId = 0;
@@ -211,6 +216,16 @@ public class gamePlay extends Activity {
 		gOverlayout = (RelativeLayout)findViewById(R.id.gameOverLayout);
 		score = (TextView)findViewById(R.id.score);
 		restartBtn = (Button)findViewById(R.id.restartBtn);
+		gameHighScore = (TextView)findViewById(R.id.gameHighScore);
+		NewListDataSQL nld = new NewListDataSQL(gamePlay.this);
+		Cursor highScoreCu = nld.getAll("order by score desc");
+		if(highScoreCu.getCount() != 0)
+		{
+			highScoreCu.moveToFirst();
+			highScore = highScoreCu.getInt(2);
+		}
+		gameHighScore.setText("最高分 " + String.valueOf(highScore));
+		
 		//連技計分
 		combo = (TextView)findViewById(R.id.combo);
 		comboPlusShow = (TextView)findViewById(R.id.comboPlus);
@@ -228,6 +243,8 @@ public class gamePlay extends Activity {
 		updateBtn = (Button)findViewById(R.id.updateBtn);
 		registerBtn = (Button)findViewById(R.id.registerBtn);
 		registerDesc = (TextView)findViewById(R.id.registerDesc);
+		newRecored = (TextView)findViewById(R.id.newRecored);
+		gameOverAniStatu = 0;
 		
 		//繼續
 		resumeBtn.setOnClickListener(new View.OnClickListener() {
@@ -320,7 +337,7 @@ public class gamePlay extends Activity {
 		int xPaddig = (int)(vW / 5);
 		int yPadding = (int)(vH / 6);
 		//int marginBottom = xyPaddig;
-		int gsl_h = (int)(vH / 60) * 4;
+		int gsl_h = (int)(vH / 40) * 4;
 		int y = 0;
 		int yMargin = (int)(yPadding / 1.5 ) / 4; //18
 		
@@ -445,7 +462,7 @@ public class gamePlay extends Activity {
 				//將v 加入佇列
 				//st.add(v);
 									
-				v.setBackgroundResource(R.drawable.poke_press_icon);
+				v.setBackgroundResource(R.drawable.poke_press);
 				v.setClickable(false);					
 				
 				//記錄最大hits
@@ -565,7 +582,7 @@ public class gamePlay extends Activity {
 			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int)((vW / 5) / 1.5) , (int)((vW / 5) / 1.5) );  
 			lp.setMargins(x , y, 0, 0); 
 			bub.setLayoutParams(lp);  
-			bub.setBackgroundResource(R.drawable.poke_icon);
+			bub.setBackgroundResource(R.drawable.poke);
 			//id用來決定存活幾秒後恢復
 			bub.setId(0);
 			
@@ -746,7 +763,7 @@ public class gamePlay extends Activity {
 									v.setBackgroundResource(R.drawable.item_double);
 									break;
 								default:
-									v.setBackgroundResource(R.drawable.poke_icon);
+									v.setBackgroundResource(R.drawable.poke);
 									break;
 							}
 							
@@ -791,6 +808,54 @@ public class gamePlay extends Activity {
 					}
 					
 					//
+					break;
+				case 4: //game over animate
+					
+					AlphaAnimation alpha = new AlphaAnimation(0, 1);
+					alpha.setDuration(1000);
+					
+					
+					switch(gameOverAniStatu)
+					{
+						case 0:
+							//gameOverScore.setAnimation(alpha);
+							gameOverScore.setVisibility(View.VISIBLE);
+							gameOverScore.startAnimation(alpha);
+							gameOverAnimation();
+							break;
+						case 1:
+							gameOverCombo.setVisibility(View.VISIBLE);
+							gameOverCombo.startAnimation(alpha);
+							gameOverAnimation();
+							break;
+						case 2:
+							level.setVisibility(View.VISIBLE);
+							level.startAnimation(alpha);
+							gameOverAnimation();
+							break;
+						case 3:
+							if(Integer.parseInt( score.getText().toString() ) > highScore)
+							{
+								newRecored.setVisibility(View.VISIBLE);
+								newRecored.startAnimation(alpha);
+							}
+							gameOverAnimation();
+							break;
+						case 4:
+							
+							overHomeBtn.setVisibility(View.VISIBLE);
+							overHomeBtn.startAnimation(alpha);
+							//System.out.println("gameOverAniStatu: " + gameOverAniStatu);
+							
+							gameOverAniStatu = 0;
+							break;
+						default:
+							
+							break;
+					}
+					
+					gameOverAniStatu++;
+					
 					break;
 			}
 		}
@@ -931,9 +996,16 @@ public class gamePlay extends Activity {
 			
 		}
 		
+		
+		
 		gPauselayout.setVisibility(View.INVISIBLE);
 		gOverlayout.setVisibility(View.VISIBLE);
+		
+		
 		gOverlayout.bringToFront();
+		
+		//Animation
+		gameOverAnimation();
 		
 		overHomeBtn.setOnClickListener(new View.OnClickListener() {
 			
@@ -982,6 +1054,8 @@ public class gamePlay extends Activity {
 		level.setText(levelStr);
 		gameOverScore.setText( score.getText() );
 		gameOverCombo.setText( String.valueOf(regComboScore) + " hits" );
+		
+		
 		
 		//判斷是否有註冊
 		String userName = "ghost";
@@ -1080,6 +1154,27 @@ public class gamePlay extends Activity {
 		}
 		*/
 		
+	}
+	
+	private void gameOverAnimation() {
+		Thread gameOverAnimate = new Thread(){
+	    @Override
+	    public void run() {
+	        // TODO Auto-generated method stub 
+	    	try {	    	   
+		    		Thread.sleep(1000);
+					Message msg = new Message();
+					msg.what = 4;
+					uiMessageHandler.sendMessage(msg);
+				}
+			catch(Exception e){
+				}
+			finally {
+				}
+	    			        
+	    	}    
+		};
+		gameOverAnimate.start();
 	}
 	
 	//遊戲道具
