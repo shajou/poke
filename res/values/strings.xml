@@ -3,6 +3,22 @@
 
     <string name="app_name">poke</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_id">454441757971319</string>
+    
+    <string name="about_desc1">
+		戳破泡棉我想是大家從小只要拿在手上就會想做的事，那戳破瞬間的快感及清脆的聲響是無與倫比的， 為此，我們做出了這個小遊戲，希望大家能一起回味戳破泡棉的快感，以手機遊戲呈現的方式讓大家有戳不完的泡棉(握拳)。\n\n我們的遊戲設定在一分鐘左右即可讓你完成遊戲，讓你能夠在等餐時、等車時、排隊時的殺時間小遊戲!\n\n如對程式有任何建議可透過下列方式來信喔！
+    </string>
+    
+    <string name="about_desc2">
+        Site - www.grtimed.com \n\nE-mail - doshajou@gmail.com \n
+        
+    </string>
+    
+    <string name="about_app1">點擊前往 : SOS Morse Code 摩斯電碼</string>
+    
+    <string name="about_desc3">
+        	這是一款能讓你用手機螢幕或LED燈閃爍摩斯電碼的App，因近年來災禍不斷，故我們提供此App讓使用者多一道能夠發出求救訊息的方法!
+        
+    </string>
 
 </resources>

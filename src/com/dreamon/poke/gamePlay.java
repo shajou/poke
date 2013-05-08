@@ -933,11 +933,10 @@ public class gamePlay extends Activity {
 				View v = (View)st.get(c);
 								
 				//如果有狀態是BOMB的 就設回0
-				System.out.println("stStatu[c]: " + stStatu[c]);
 				if(stStatu[c] == 3 )
 				{
 					
-					//大於三就
+					//每六秒檢查
 					if(stCount == 6)
 					{						
 						v.setId(0);
@@ -953,7 +952,6 @@ public class gamePlay extends Activity {
 			}
 			stCount++;
 			
-			System.out.println("stCount: " + stCount);
 			if(stCount > 6)
 			{
 				stCount = 0;
