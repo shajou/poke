@@ -77,14 +77,6 @@
 	    />
     
     
-    
-    <Button
-        android:id="@+id/buttonLoginLogout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/shareButton"
-        android:text="login" />
-    
     <Button
         android:id="@+id/testBtn"
         android:layout_width="wrap_content"
