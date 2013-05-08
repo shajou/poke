@@ -96,7 +96,7 @@
             android:gravity="center"
             android:visibility="invisible"
             android:textColor="#ffffff"
-            android:text="000" />
+            android:text="no data" />
 
     </RelativeLayout>
     

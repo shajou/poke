@@ -204,7 +204,7 @@ public class gameRank extends Activity {
 		switchRank(1);
 		
 		//ads
-		adView = new AdView(this, AdSize.BANNER, "a15147df506928f");
+		adView = new AdView(this, AdSize.BANNER, "a1518a249a59e00");
 		RelativeLayout ads = (RelativeLayout)findViewById(R.id.adsLayout);
 		ads.addView(adView);
 		threadResetBtn();
@@ -319,8 +319,9 @@ public class gameRank extends Activity {
 			
 		String str = sqlData.result();
 		
-		
-			JSONArray arr = (JSONArray) JSONValue.parse(str);
+		if(!str.equals("0"))
+		{
+JSONArray arr = (JSONArray) JSONValue.parse(str);
 			
 			int rows_num = arr.size();
 			
@@ -356,7 +357,7 @@ public class gameRank extends Activity {
 				//put( list_view.xml => itemTitle, "tittle text");
 				//put( list_view.xml => itemDesc, "tittle text");
 				//String[] code = codeArray[i].split("::");
-				map.put("itemScore", String.valueOf(score[i]));
+				map.put("itemScore", String.valueOf((i + 1) + ". " + score[i]));
 				map.put("itemMsg", String.valueOf(msg[i]));
 				map.put("itemDesc", String.valueOf("Name: " + name[i] + " Hits: " + hits[i] + " Level: " + level[i]));
 				myList2.add(map);
@@ -405,6 +406,10 @@ public class gameRank extends Activity {
 				}
 				
 			}
+		}
+		
+		
+			
 			
 		
 	}

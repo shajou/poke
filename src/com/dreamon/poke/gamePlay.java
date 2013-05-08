@@ -511,10 +511,10 @@ public class gamePlay extends Activity {
 												String.valueOf(
 														score.getText()
 														)
-													) - s
+													) - Math.round(s * 0.5)
 											)
 										);
-								itemMsgBox( "BOMB!!!" );
+								itemMsgBox( "BOMB!!!\n- " + String.valueOf(Math.round(s * 0.5)) );
 								//itemScoreDouble();
 							default:
 								break;
@@ -564,7 +564,7 @@ public class gamePlay extends Activity {
 				}
 				else if(scorePlus == 220)
 				{
-					itemComboDescStr = "已經沒有人能阻止你啦!!";
+					itemComboDescStr = "突破天際啦";
 					itemComboDescMsgBox(itemComboDescStr);
 				}
 				else if(scorePlus == 250)
@@ -592,7 +592,15 @@ public class gamePlay extends Activity {
 			if( i % 5 == 0)
 			{
 				y = (i * yMargin) + gsl_h;
-				x = ((vW / 5) - (int)((vW / 5) / 1.5)) / 2;
+				if(i % 2 == 0)
+				{
+					x = (((vW / 5) - (int)((vW / 5) / 1.5)) / 2) + 20;
+				}
+				else
+				{
+					x = (((vW / 5) - (int)((vW / 5) / 1.5)) / 2) - 20;
+				}
+				
 			}			
 			
 			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int)((vW / 5) / 1.5) , (int)((vW / 5) / 1.5) );  
@@ -930,15 +938,17 @@ public class gamePlay extends Activity {
 			
 			for(int c =0 ; c < st.size() ;c++)
 			{
-				View v = (View)st.get(c);
+				
 								
 				//如果有狀態是BOMB的 就設回0
 				if(stStatu[c] == 3 )
 				{
-					
-					//每六秒檢查
-					if(stCount == 6)
-					{						
+					View v = (View)st.get(c);
+					//每10秒檢查
+					if(stCount == 10)
+					{				
+						System.out.println("count == 10");
+						
 						v.setId(0);
 						v.setBackgroundResource(R.drawable.poke);
 						stStatu[c] = 0;
@@ -952,7 +962,7 @@ public class gamePlay extends Activity {
 			}
 			stCount++;
 			
-			if(stCount > 6)
+			if(stCount > 10)
 			{
 				stCount = 0;
 			}
