@@ -190,6 +190,13 @@ public class gamePlay extends Activity {
 		ActionBar ab = getActionBar();
 		ab.hide();
 		
+		//bundle
+		Intent it = this.getIntent();
+		Bundle bd = it.getExtras();
+		String bdStr = bd.getString("secretLogo");
+		
+		System.out.println("secretLogo: " + bdStr);
+		
 		//¹D¨ã
 		gameitem = new gameItem();
 		itemMsg = (TextView)findViewById(R.id.itemMsg);

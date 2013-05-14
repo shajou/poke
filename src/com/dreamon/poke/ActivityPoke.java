@@ -36,8 +36,11 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +54,8 @@ public class ActivityPoke extends Activity {
 	Button testBtn;
 	Button setBtn;
 	Button aboutBtn;
+	ImageView logo;
+	TextView secretLogoText;
 	
 	AdView adView;
 	Thread thread;
@@ -59,6 +64,8 @@ public class ActivityPoke extends Activity {
 	DisplayMetrics dm;
 	int vW = 0;
 	
+	int secretLogo = 0;
+	Bundle bd;
 	
 	@SuppressWarnings("null")
 	@Override
@@ -68,6 +75,8 @@ public class ActivityPoke extends Activity {
 		
 		ActionBar ab = getActionBar();
 		ab.hide();
+		
+		bd = new Bundle();
 		
 		dm = new DisplayMetrics();
 		this.getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -85,6 +94,8 @@ public class ActivityPoke extends Activity {
 		setBtn = (Button)findViewById(R.id.setBtn);
 		testBtn = (Button)findViewById(R.id.testBtn);
 		aboutBtn = (Button)findViewById(R.id.aboutBtn);
+		logo = (ImageView)findViewById(R.id.logo);
+		secretLogoText = (TextView)findViewById(R.id.secretLogoText);
 		
 		startBtn.setOnClickListener(new View.OnClickListener() {
 			
@@ -93,7 +104,11 @@ public class ActivityPoke extends Activity {
 				// TODO Auto-generated method stub
 				Intent it = new Intent();
 				it.setClass(ActivityPoke.this, gamePlay.class);
+				
+				it.putExtras(bd);
 				ActivityPoke.this.startActivity(it);
+				bd.putString("secretLogo", "0");
+			
 			}
 		});
 		
@@ -141,6 +156,47 @@ public class ActivityPoke extends Activity {
 				ActivityPoke.this.startActivity(it);
 			}
 		});
+		
+		logo.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				//Intent it = new Intent();
+				//it.setClass(ActivityPoke.this, pokeSet.class);
+				//ActivityPoke.this.startActivity(it);
+				if(secretLogo == 3)
+				{
+					
+					bd.putString("secretLogo", "1");
+					secretLogo = 0;
+					
+					ScaleAnimation scaleAnime;
+					AlphaAnimation AlphaAnime;
+					AnimationSet as = new AnimationSet(false);
+					AlphaAnime = new AlphaAnimation(0, 1);
+					AlphaAnime.setDuration(2000);
+					scaleAnime = new ScaleAnimation(0,2, 0, 2,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+					scaleAnime.setDuration(2000);
+					
+					as.addAnimation(AlphaAnime);
+					as.addAnimation(scaleAnime);
+					secretLogoText.setAnimation(as);
+					secretLogoText.setVisibility(View.VISIBLE);
+					as.start();
+					
+					secretLogoAnimation();
+				}
+				else
+				{
+					secretLogo++;
+				}
+			}
+		});
+		
+		
+		
+		
 		
 		//§PÂ_¬O§_¦³µù¥U
 		String userNmae = "ghost";
@@ -222,6 +278,27 @@ public class ActivityPoke extends Activity {
 		};
 		gameAnimate.start();
 	}
+	
+	private void secretLogoAnimation() {
+		Thread secret = new Thread(){
+	    @Override
+	    public void run() {
+	        // TODO Auto-generated method stub 
+	    	try {	    	   
+		    		Thread.sleep(2000);
+					Message msg = new Message();
+					msg.what = 3;
+					uiMessageHandler.sendMessage(msg);
+				}
+			catch(Exception e){
+				}
+			finally {
+				}
+	    			        
+	    	}    
+		};
+		secret.start();
+	}
 
 	private Handler uiMessageHandler = new Handler()
 	{
@@ -279,6 +356,9 @@ public class ActivityPoke extends Activity {
 					
 					gameAniStatu++;
 					
+					break;
+				case 3: // secret
+					secretLogoText.setVisibility(View.INVISIBLE);
 					break;
 			}
 		}

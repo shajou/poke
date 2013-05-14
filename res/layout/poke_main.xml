@@ -10,13 +10,29 @@
     tools:context=".ActivityPoke" >
     
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/logo"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         
         android:layout_alignParentTop="true"
         android:src="@drawable/logo" />
+    
+    <TextView
+        android:id="@+id/secretLogoText"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="34sp"
+        android:layout_marginTop="50dp"
+        android:text="開啟密技!!"
+        android:shadowColor="#1f619d"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:textColor="#ffffff"
+        android:visibility="invisible"
+        android:layout_below="@+id/logo"/>
 
     <Button
         android:id="@+id/startBtn"
@@ -24,7 +40,7 @@
         android:layout_height="38dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:layout_below="@+id/imageView1"
+        android:layout_below="@+id/logo"
         android:visibility="invisible"
         android:background="@drawable/start"
         
